@@ -1,0 +1,145 @@
+{
+  "schema": "0514_paired_hard_challenge_design.v1",
+  "date": "2026-09-19",
+  "status": "design_only_not_executed",
+  "objective": "Pre-register a discriminative paired passive-vs-active challenge where stale memory is expected to make the passive downstream task attempt fail while the active verify-update-act loop can succeed, so that active-over-passive mechanism evidence becomes evaluable.",
+  "motivation_evidence": {
+    "previous_paired_control": "results/0514_paired_passive_vs_active_task_bridge_live_passive_v1/",
+    "previous_result": "active 6/6 success, live passive 6/6 success, paired_delta=0, schema_ok=true",
+    "why_non_discriminative": [
+      "Both arms executed the downstream action with forceAction=True, which bypasses proximity/visibility preconditions, so the passive arm could pick the moved object from the stale location.",
+      "Stale-to-true displacements in the fixed six cases were small for most rows (0.47-0.83m for 4/6 rows; only 3.05m and 3.51m exceeded 2m), so even honest proximity-gated pickup could succeed at the stale location.",
+      "The detector-refreshed position equals the live true object position in all six rows (detector-to-true distance 0.0), so the active arm's refresh target is accurate under the current verifier."
+    ]
+  },
+  "hypothesis": "On a frozen, geometry-screened set of cases where the stale remembered location is farther than the AI2-THOR interaction range from the true object location, the passive arm (no verification, no memory mutation, action attempted from stale memory) fails the downstream PickupObject task, while the active arm (verify -> GSAM stale detection -> detector-backed refresh -> action from refreshed location) succeeds.",
+  "pre_registered_universe": {
+    "scene_target_combos": [
+      {"scene": "FloorPlan1", "target": "Apple"},
+      {"scene": "FloorPlan1", "target": "Book"},
+      {"scene": "FloorPlan3", "target": "Cup"},
+      {"scene": "FloorPlan201", "target": "Newspaper"},
+      {"scene": "FloorPlan201", "target": "Pencil"}
+    ],
+    "seeds": [7, 11, 17, 23, 29, 37, 43, 53, 67, 73, 83, 97],
+    "candidate_count": 60,
+    "selection_basis": "Scene-target combinations with prior live spawn evidence in results/ai2thor_live_gsam_scale_expansion_v1/ and results/ai2thor_live_gsam_mixed_challenge_42_case_pre_registered_v1/.",
+    "disclosure": "The universe and seeds are frozen before any screening or arm execution. Screening uses simulator metadata for case construction only; oracle metadata is never a policy input."
+  },
+  "screening_rule": {
+    "phase": "construction (frozen before arm runs; geometry and spawn only; no GSAM, no policy outcomes)",
+    "steps": [
+      "Launch AI2-THOR controller and step InitialRandomSpawn(randomSeed=seed, forceVisible=True, numPlacementAttempts=5).",
+      "If the target type does not spawn, record not_spawned and exclude the candidate. The rule is not relaxed.",
+      "Record P_true = live target object position after spawn, and P_stale = before-phase remembered position from rearrangement_location(scene, target, 'before').",
+      "Compute G_passive = nearest_revisit_position(P_stale, reachable) and G_active = nearest_revisit_position(P_true, reachable).",
+      "Compute d_passive = ground_distance(G_passive, P_true) and d_active = ground_distance(G_active, P_true).",
+      "Qualify iff d_passive >= 2.0 AND d_active <= 1.5 AND the target is pickupable."
+    ],
+    "interaction_radius_m": 1.5,
+    "d_passive_min_m": 2.0,
+    "d_active_max_m": 1.5,
+    "freeze_rule": "Sort qualifying candidates by (scene, target, seed) and freeze the first K=8 as the challenge case list. If fewer than 8 qualify, freeze all qualifying candidates and report the shortfall; do not relax thresholds and do not substitute cases.",
+    "frozen_case_list_artifact": "results/0514_paired_hard_challenge_v1/case_list_paired_hard_challenge_frozen_v1.json",
+    "commit_before_running_arms": true
+  },
+  "arms": {
+    "active": {
+      "runner": "embodied_memory_pilot/ai2thor_live_gsam_closed_loop.py",
+      "protocol": "stepwise revisit (no TeleportFull), GSAM stale verification, detector-backed in-memory refresh, stepwise task bridge to the refreshed location, honest interaction",
+      "expected_fields": ["verifier_used=true", "memory_mutated=true", "decision_stale=true", "downstream_task_success in {true,false}"]
+    },
+    "passive": {
+      "runner": "embodied_memory_pilot/ai2thor_paired_task_bridge_control.py --live-passive",
+      "protocol": "stepwise navigation to memory_old_position, no verification, no memory mutation, action attempted from stale memory at the remembered location, honest interaction",
+      "expected_fields": ["verifier_used=false", "memory_mutated=false", "task_execution_evaluated=true", "downstream_task_success in {true,false}"]
+    },
+    "shared_controls": [
+      "Same scene, seed, and InitialRandomSpawn configuration for both arms.",
+      "Same stepwise navigation mode and adaptive primitive-action budget policy.",
+      "No TeleportFull and no TeleportObject on measured revisit or task-bridge paths.",
+      "Same honest interaction semantics and the same interaction-radius enforcement (simulator-enforced, not a custom gate)."
+    ]
+  },
+  "interaction_protocol": {
+    "name": "honest_interaction",
+    "config_flag": "--honest-interaction",
+    "default": "off (existing artifacts remain reproducible)",
+    "semantics": [
+      "Execute PickupObject with forceAction=False so simulator proximity and visibility preconditions apply.",
+      "Before the action, apply a deterministic face-target rotation toward the arm's navigation goal (active: detector-refreshed position; passive: remembered stale position).",
+      "No same-type substitution: the screening rule excludes ambiguous same-type after-pairings, so the target instance is unique by construction. Because AI2-THOR objectIds encode positions and change after spawn, resolution falls back to the unique same-type instance near the arm's target position; if no matching instance exists, record target_object_id_missing and fail the attempt.",
+      "Record interaction_agent_object_distance, interaction_target_visible, interaction_attempt_mode, and the action errorMessage."
+    ]
+  },
+  "primary_endpoint": {
+    "metric": "paired downstream PickupObject success on the true target instance",
+    "unit": "case",
+    "paired_by": "case_id = scene|target|seed"
+  },
+  "secondary_endpoints": [
+    "verifier_used and memory_mutated rates per arm",
+    "stale-to-true displacement per case",
+    "interaction_agent_object_distance per arm at action time",
+    "path steps and primitive actions per arm",
+    "TeleportFull/TeleportObject flags on measured paths",
+    "failure reasons per arm"
+  ],
+  "decision_rule": {
+    "discriminative_support": "active_success > passive_success AND passive_success <= 1/8; report McNemar exact p descriptively (n=8, b=8,c=0 -> p=0.0078; b=6,c=0 -> p=0.031).",
+    "partial": "passive_success in {2,3}/8: report exact paired counts and the geometry covariates; no strong superiority claim.",
+    "non_discriminative": "passive_success >= 4/8: stop and record a negative result; no active-over-passive claim.",
+    "analysis_note": "Report exact counts and per-case geometry. Do not use significance language beyond the pre-registered exact test."
+  },
+  "falsification_rules": [
+    "No case substitution, threshold relaxation, or re-screening after arm outcomes are observed.",
+    "If the active arm fails because GSAM marks the stale memory fresh, record it as an active-arm failure; do not exclude the case.",
+    "If the passive arm succeeds because its navigation route passes within interaction range of the true object, record it as a passive success and log the route-distance covariate; do not exclude the case.",
+    "If fewer than 4 cases qualify, run the qualifying cases only and report the shortfall; do not change the rule."
+  ],
+  "implementation_plan": {
+    "step_1_screening": {
+      "new_files": [
+        "embodied_memory_pilot/ai2thor_paired_hard_challenge_screen.py",
+        "tests/test_ai2thor_paired_hard_challenge_screen.py"
+      ],
+      "description": "AI2-THOR-only screening tool implementing the frozen rule; outputs candidate table and frozen case list JSON. No GSAM or detector dependency."
+    },
+    "step_2_honest_interaction": {
+      "changed_files": [
+        "embodied_memory_pilot/ai2thor_live_gsam_closed_loop.py",
+        "tests/test_ai2thor_live_gsam_closed_loop.py"
+      ],
+      "description": "Add --honest-interaction flag and shared face-then-pick helper used by both the active task bridge and the passive task bridge; default off preserves existing artifacts."
+    },
+    "step_3_paired_runner": {
+      "changed_files": [
+        "embodied_memory_pilot/ai2thor_paired_task_bridge_control.py",
+        "tests/test_ai2thor_paired_task_bridge_control.py"
+      ],
+      "description": "Accept the frozen case list, run active then passive arms with honest interaction, and emit paired JSON/CSV plus summary and schema_check."
+    },
+    "step_4_execution": {
+      "order": [
+        "Run screening; freeze and commit the case list.",
+        "Run the active arm on the frozen case list.",
+        "Run the passive arm on the same frozen case list.",
+        "Produce a result-to-claim artifact with exact paired counts, geometry covariates, and the pre-registered decision outcome."
+      ],
+      "estimated_runtime": "screening ~30-60 min for 60 candidates; arms ~1-2 h for 8+8 controller runs"
+    }
+  },
+  "claim_boundary": [
+    "Fixed-challenge paired mechanism evidence only.",
+    "No broad scale, statistical robustness, or unseen-scene/seed/target generalization claims.",
+    "No ObjectNav/SPL or navigation success-rate claims.",
+    "No manipulation benchmark or OpenObject generality claims.",
+    "No broad passive-vs-active superiority claim beyond the frozen discriminative case set.",
+    "No persistent memory writeback or cross-platform transfer claims."
+  ],
+  "planned_artifacts": [
+    "results/0514_paired_hard_challenge_screen_v1/ (screening table + frozen case list)",
+    "results/0514_paired_hard_challenge_v1/ (active and passive arm outputs, paired JSON/CSV, summary, schema_check)",
+    "results/0514_paired_hard_challenge_v1/paired_hard_challenge_result_to_claim.{json,md}"
+  ]
+}

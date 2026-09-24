@@ -1,0 +1,277 @@
+{
+  "schema_version": "ai2thor_live_gsam_failure_slices.v1",
+  "status": "ok",
+  "claim_boundary": "CPU-only post-processing of a previously recorded AI2-THOR controller-backed GSAM detector artifact; oracle labels are evaluation-only detector outcome labels; no new live run; no AI2-THOR, GSAM, Habitat, GPU, navigation, manipulation, ObjectNav, task success, recovery-search success, live policy superiority, no memory writeback/repair, and no persistent memory update",
+  "input_rows": 20,
+  "labelled_rows": 20,
+  "memory_updated_rows": 0,
+  "group_fields": [
+    "scene",
+    "target",
+    "visibility_error",
+    "target_visible_after_revisit_sweep",
+    "decision_reason",
+    "candidate_selected_by_budget"
+  ],
+  "outcome_counts": {
+    "tp": 13,
+    "fp": 0,
+    "tn": 2,
+    "fn": 5,
+    "unlabelled": 0
+  },
+  "false_negative_slices": {
+    "scene": [
+      {
+        "field": "scene",
+        "value": "FloorPlan201",
+        "rows": 3
+      },
+      {
+        "field": "scene",
+        "value": "FloorPlan1",
+        "rows": 2
+      }
+    ],
+    "target": [
+      {
+        "field": "target",
+        "value": "Newspaper",
+        "rows": 3
+      },
+      {
+        "field": "target",
+        "value": "Book",
+        "rows": 2
+      }
+    ],
+    "visibility_error": [
+      {
+        "field": "visibility_error",
+        "value": "target_not_visible_after_revisit_sweep",
+        "rows": 4
+      },
+      {
+        "field": "visibility_error",
+        "value": "null",
+        "rows": 1
+      }
+    ],
+    "target_visible_after_revisit_sweep": [
+      {
+        "field": "target_visible_after_revisit_sweep",
+        "value": "false",
+        "rows": 4
+      },
+      {
+        "field": "target_visible_after_revisit_sweep",
+        "value": "true",
+        "rows": 1
+      }
+    ],
+    "decision_reason": [
+      {
+        "field": "decision_reason",
+        "value": "nearest_after_detection_normalized_frame_distance",
+        "rows": 5
+      }
+    ],
+    "candidate_selected_by_budget": [
+      {
+        "field": "candidate_selected_by_budget",
+        "value": "null",
+        "rows": 5
+      }
+    ]
+  },
+  "false_positive_slices": {
+    "scene": [],
+    "target": [],
+    "visibility_error": [],
+    "target_visible_after_revisit_sweep": [],
+    "decision_reason": [],
+    "candidate_selected_by_budget": []
+  },
+  "outcome_slice_rows": [
+    {
+      "outcome": "tp",
+      "field": "scene",
+      "value": "FloorPlan3",
+      "rows": 6
+    },
+    {
+      "outcome": "tp",
+      "field": "scene",
+      "value": "FloorPlan1",
+      "rows": 4
+    },
+    {
+      "outcome": "tp",
+      "field": "scene",
+      "value": "FloorPlan201",
+      "rows": 3
+    },
+    {
+      "outcome": "tp",
+      "field": "target",
+      "value": "Apple",
+      "rows": 4
+    },
+    {
+      "outcome": "tp",
+      "field": "target",
+      "value": "Cup",
+      "rows": 3
+    },
+    {
+      "outcome": "tp",
+      "field": "target",
+      "value": "Knife",
+      "rows": 3
+    },
+    {
+      "outcome": "tp",
+      "field": "target",
+      "value": "Pencil",
+      "rows": 3
+    },
+    {
+      "outcome": "tp",
+      "field": "visibility_error",
+      "value": "target_not_visible_after_revisit_sweep",
+      "rows": 9
+    },
+    {
+      "outcome": "tp",
+      "field": "visibility_error",
+      "value": "null",
+      "rows": 4
+    },
+    {
+      "outcome": "tp",
+      "field": "target_visible_after_revisit_sweep",
+      "value": "false",
+      "rows": 9
+    },
+    {
+      "outcome": "tp",
+      "field": "target_visible_after_revisit_sweep",
+      "value": "true",
+      "rows": 4
+    },
+    {
+      "outcome": "tp",
+      "field": "decision_reason",
+      "value": "nearest_after_detection_normalized_frame_distance",
+      "rows": 9
+    },
+    {
+      "outcome": "tp",
+      "field": "decision_reason",
+      "value": "no_matching_detection",
+      "rows": 4
+    },
+    {
+      "outcome": "tp",
+      "field": "candidate_selected_by_budget",
+      "value": "null",
+      "rows": 13
+    },
+    {
+      "outcome": "tn",
+      "field": "scene",
+      "value": "FloorPlan1",
+      "rows": 2
+    },
+    {
+      "outcome": "tn",
+      "field": "target",
+      "value": "Book",
+      "rows": 2
+    },
+    {
+      "outcome": "tn",
+      "field": "visibility_error",
+      "value": "null",
+      "rows": 2
+    },
+    {
+      "outcome": "tn",
+      "field": "target_visible_after_revisit_sweep",
+      "value": "true",
+      "rows": 2
+    },
+    {
+      "outcome": "tn",
+      "field": "decision_reason",
+      "value": "nearest_after_detection_normalized_frame_distance",
+      "rows": 2
+    },
+    {
+      "outcome": "tn",
+      "field": "candidate_selected_by_budget",
+      "value": "null",
+      "rows": 2
+    },
+    {
+      "outcome": "fn",
+      "field": "scene",
+      "value": "FloorPlan201",
+      "rows": 3
+    },
+    {
+      "outcome": "fn",
+      "field": "scene",
+      "value": "FloorPlan1",
+      "rows": 2
+    },
+    {
+      "outcome": "fn",
+      "field": "target",
+      "value": "Newspaper",
+      "rows": 3
+    },
+    {
+      "outcome": "fn",
+      "field": "target",
+      "value": "Book",
+      "rows": 2
+    },
+    {
+      "outcome": "fn",
+      "field": "visibility_error",
+      "value": "target_not_visible_after_revisit_sweep",
+      "rows": 4
+    },
+    {
+      "outcome": "fn",
+      "field": "visibility_error",
+      "value": "null",
+      "rows": 1
+    },
+    {
+      "outcome": "fn",
+      "field": "target_visible_after_revisit_sweep",
+      "value": "false",
+      "rows": 4
+    },
+    {
+      "outcome": "fn",
+      "field": "target_visible_after_revisit_sweep",
+      "value": "true",
+      "rows": 1
+    },
+    {
+      "outcome": "fn",
+      "field": "decision_reason",
+      "value": "nearest_after_detection_normalized_frame_distance",
+      "rows": 5
+    },
+    {
+      "outcome": "fn",
+      "field": "candidate_selected_by_budget",
+      "value": "null",
+      "rows": 5
+    }
+  ]
+}

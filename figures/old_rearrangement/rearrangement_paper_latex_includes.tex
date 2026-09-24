@@ -1,0 +1,13 @@
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/fig_rearrangement_verification_pareto.pdf}
+    \caption{Verification-cost and stale-error tradeoff on 10 saved AI2-THOR rearrangement probes and 60 total tasks. All points use memory budget 16; marker size in panel (a) encodes completion.}
+    \label{fig:rearrangement-verification-pareto}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/fig_rearrangement_stale_case.pdf}
+    \caption{Qualitative stale-memory catch case from saved AI2-THOR before/after metadata. A salience-retained before-state object memory is stale after rearrangement; thresholded replay verification catches it and falls back to scene search.}
+    \label{fig:rearrangement-stale-case}
+\end{figure}

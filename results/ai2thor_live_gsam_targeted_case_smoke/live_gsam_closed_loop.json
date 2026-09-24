@@ -1,0 +1,76 @@
+{
+  "schema_version": "ai2thor_live_gsam_closed_loop.v1",
+  "status": "ok",
+  "capability": {
+    "available": true,
+    "python": "3.11.15",
+    "platform": "Linux-6.8.0-111-generic-x86_64-with-glibc2.35",
+    "ai2thor_version": "4.2.0",
+    "blocker": null,
+    "install_hint": "Create a Python 3.10/3.11 environment and install ai2thor there, e.g. `conda create -n memoryguard-ai2thor python=3.11 -y` then `conda activate memoryguard-ai2thor` and `pip install ai2thor`."
+  },
+  "summary": {
+    "rows": 0,
+    "labelled_rows": 0,
+    "agreement_rows": 0,
+    "agreement_rate": 0.0,
+    "verifier_used_rows": 0,
+    "policy_verified_rows": 0,
+    "policy_skipped_rows": 0,
+    "mean_expected_verification_value": 0.0,
+    "verification_budget": 1,
+    "candidate_rows": 0,
+    "budget_selected_rows": 0,
+    "budget_skipped_rows": 0,
+    "mean_selected_expected_verification_value": 0.0,
+    "memory_update_candidate_rows": 0,
+    "memory_updated_rows": 0,
+    "case_list_source": "results/ai2thor_live_gsam_failure_cases/live_gsam_failure_cases.json",
+    "case_list_rows": 5,
+    "case_list_matched_rows": 0,
+    "case_list_unmatched_rows": 5,
+    "case_list_unmatched_cases": [
+      {
+        "scene": "FloorPlan1",
+        "seed": 31,
+        "target": "Book",
+        "source_row_idx": 19
+      },
+      {
+        "scene": "FloorPlan201",
+        "seed": 7,
+        "target": "Newspaper",
+        "source_row_idx": 4
+      },
+      {
+        "scene": "FloorPlan201",
+        "seed": 11,
+        "target": "Newspaper",
+        "source_row_idx": 10
+      },
+      {
+        "scene": "FloorPlan201",
+        "seed": 29,
+        "target": "Newspaper",
+        "source_row_idx": 16
+      },
+      {
+        "scene": "FloorPlan1",
+        "seed": 7,
+        "target": "Book",
+        "source_row_idx": 1
+      }
+    ],
+    "controller_started": true,
+    "scenes": [
+      "FloorPlan1"
+    ],
+    "seeds": [
+      31
+    ],
+    "threshold": 0.05,
+    "teleport_object_used": false
+  },
+  "rows": [],
+  "claim_boundary": "controller-backed closed-loop GSAM stale-memory detection; InitialRandomSpawn occurs live; TeleportFull is only a shortcut to the remembered before-location; no TeleportObject; oracle metadata is offline labels only; not full navigation, manipulation, or task success"
+}

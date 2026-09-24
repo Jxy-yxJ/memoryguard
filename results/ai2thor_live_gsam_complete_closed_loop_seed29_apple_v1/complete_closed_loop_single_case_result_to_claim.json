@@ -1,0 +1,67 @@
+{
+  "schema": "complete_closed_loop_single_case_result_to_claim.v1",
+  "date": "2026-05-25",
+  "source_artifact": "results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_v1/live_gsam_closed_loop.json",
+  "log": "logs/live_gsam_complete_closed_loop_seed29_apple_v1.log",
+  "verdict": "yes_single_case_nonteleport_closed_loop_task_success",
+  "evidence": {
+    "rows": 1,
+    "scene": "FloorPlan1",
+    "seed": 29,
+    "target": "Apple",
+    "spawn_success": true,
+    "revisit_action": "stepwise_navigation",
+    "used_teleportfull_for_revisit": false,
+    "revisit_path_steps": 2,
+    "revisit_navigation_actions": [
+      "RotateRight",
+      "RotateRight",
+      "RotateRight",
+      "MoveAhead",
+      "MoveAhead"
+    ],
+    "revisit_navigation_failure_reason": null,
+    "target_visible_after_revisit_sweep": true,
+    "policy_should_verify": true,
+    "verifier_used": true,
+    "verifier_name": "grounded_sam2",
+    "decision_stale": true,
+    "decision_confidence": 1.0,
+    "memory_update_source": "live_controller_revisit_detector_verifier_evidence",
+    "memory_mutated": true,
+    "task_bridge_navigation_mode": "stepwise_navigation",
+    "task_bridge_used_teleportfull": false,
+    "task_bridge_path_steps": 5,
+    "task_bridge_navigation_actions": [
+      "RotateRight",
+      "RotateRight",
+      "RotateRight",
+      "MoveAhead",
+      "MoveAhead",
+      "MoveAhead",
+      "MoveAhead",
+      "MoveAhead"
+    ],
+    "task_bridge_navigation_failure_reason": null,
+    "execute_action": "PickupObject",
+    "downstream_task_success": true,
+    "task_execution_failure_reason": null,
+    "summary_downstream_task_success_rows": 1
+  },
+  "what_results_support": [
+    "One AI2-THOR live GSAM row completes the intended sequence: live spawn, stepwise revisit, detector-backed stale verification, in-memory refresh, stepwise task bridge, and downstream PickupObject success.",
+    "The measured revisit and task-bridge paths both record task-specific action lists and neither uses TeleportFull.",
+    "The row provides the first single-case positive evidence for the original 0514 closed-loop execution target under a strict single-case boundary."
+  ],
+  "what_results_do_not_support": [
+    "No statistical navigation success rate, SPL distribution, manipulation benchmark, passive-vs-active task baseline, persistent memory writeback, cross-platform transfer, or broad active-maintenance claim.",
+    "No claim that prior failed non-Teleport bridge rows are solved generally; this is one selected known-feasible case.",
+    "Oracle metadata remains evaluation-only and is not a policy input."
+  ],
+  "claim_boundary": "Single-case non-Teleport closed-loop task-success smoke only: FloorPlan1 seed29 Apple completes detector-backed verify/update and PickupObject after stepwise measured paths. Not ObjectNav/SPL statistics, not broad navigation, not manipulation benchmark, not persistent writeback, not broad active maintenance.",
+  "next_evidence_needed": [
+    "Repeat on additional seeds/scenes/targets before claiming robustness.",
+    "Add passive/stale-memory baseline for task outcome comparison before claiming active-maintenance benefit on downstream tasks.",
+    "Keep Habitat/second-platform work separate until a perception-backed verify/update row exists there."
+  ]
+}

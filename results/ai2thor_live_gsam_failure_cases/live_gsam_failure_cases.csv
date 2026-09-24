@@ -1,0 +1,6 @@
+row_idx,scene,seed,target,visibility_error,target_visible_after_revisit_sweep,decision_reason,decision_matched_distance,decision_detections_considered,expected_verification_value,p_stale_estimate,candidate_rank_by_ev,candidate_selected_by_budget,oracle_stale_label,decision_stale
+19,FloorPlan1,31,Book,target_not_visible_after_revisit_sweep,False,nearest_after_detection_normalized_frame_distance,0.0278,30,,,,,True,False
+4,FloorPlan201,7,Newspaper,target_not_visible_after_revisit_sweep,False,nearest_after_detection_normalized_frame_distance,0.0444,57,,,,,True,False
+10,FloorPlan201,11,Newspaper,target_not_visible_after_revisit_sweep,False,nearest_after_detection_normalized_frame_distance,0.0377,61,,,,,True,False
+16,FloorPlan201,29,Newspaper,target_not_visible_after_revisit_sweep,False,nearest_after_detection_normalized_frame_distance,0.0377,73,,,,,True,False
+1,FloorPlan1,7,Book,,True,nearest_after_detection_normalized_frame_distance,0.0277,16,,,,,True,False

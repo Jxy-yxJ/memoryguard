@@ -1,0 +1,2263 @@
+{
+  "schema": "0514_paired_hard_challenge_screen.v1",
+  "status": "ok",
+  "date": "2026-09-19",
+  "capability": {
+    "available": true,
+    "python": "3.11.15",
+    "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+    "ai2thor_version": "4.2.0",
+    "blocker": null,
+    "install_hint": "Create a Python 3.10/3.11 environment and install ai2thor there, e.g. `conda create -n memoryguard-ai2thor python=3.11 -y` then `conda activate memoryguard-ai2thor` and `pip install ai2thor`."
+  },
+  "config": {
+    "universe": [
+      [
+        "FloorPlan1",
+        "Apple"
+      ],
+      [
+        "FloorPlan1",
+        "Book"
+      ],
+      [
+        "FloorPlan3",
+        "Cup"
+      ],
+      [
+        "FloorPlan201",
+        "Newspaper"
+      ],
+      [
+        "FloorPlan201",
+        "Pencil"
+      ]
+    ],
+    "seeds": [
+      7,
+      11,
+      17,
+      23,
+      29,
+      37,
+      43,
+      53,
+      67,
+      73,
+      83,
+      97
+    ],
+    "d_passive_min": 2.0,
+    "d_active_max": 1.5,
+    "k": 8,
+    "width": 300,
+    "height": 300,
+    "platform_name": "CloudRendering",
+    "out_dir": "results/0514_paired_hard_challenge_screen_v1"
+  },
+  "summary": {
+    "candidates": 60,
+    "spawned": 60,
+    "qualifying": 36,
+    "frozen_cases": 8,
+    "shortfall": false,
+    "status_counts": {
+      "qualifies": 36,
+      "below_threshold": 24
+    },
+    "controller_started": true
+  },
+  "candidate_rows": [
+    {
+      "candidate_id": "FloorPlan1|Apple|7",
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|+00.71|+00.96|-02.33",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": 0.7115572690963745,
+        "y": 0.9569252133369446,
+        "z": -2.330366849899292
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": 0.75,
+        "y": 0.900999128818512,
+        "z": -1.75
+      },
+      "d_passive": 3.3076,
+      "d_active": 0.5816,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|7",
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|+00.08|+01.11|-00.25",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": 0.07909541577100754,
+        "y": 1.1071525812149048,
+        "z": -0.25377392768859863
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": 1.0,
+        "y": 0.900999128818512,
+        "z": -0.25
+      },
+      "d_passive": 1.5135,
+      "d_active": 0.9209,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|7",
+      "scene": "FloorPlan3",
+      "seed": 7,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|+01.29|+01.32|-00.94",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101826906204224,
+        "z": -0.9019981026649475
+      },
+      "p_true": {
+        "x": 1.2853460311889648,
+        "y": 1.318251609802246,
+        "z": -0.9424718618392944
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": 1.0,
+        "y": 1.123205542564392,
+        "z": -0.25
+      },
+      "d_passive": 1.0531,
+      "d_active": 0.749,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|7",
+      "scene": "FloorPlan201",
+      "seed": 7,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-00.95|+00.47|+05.55",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -0.9508419036865234,
+        "y": 0.47366610169410706,
+        "z": 5.553868770599365
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.9026566743850708,
+        "z": 5.25
+      },
+      "d_passive": 5.3257,
+      "d_active": 0.4264,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|7",
+      "scene": "FloorPlan201",
+      "seed": 7,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.71|+00.69|+01.05",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -2.7128231525421143,
+        "y": 0.6909465193748474,
+        "z": 1.0521305799484253
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -2.75,
+        "y": 0.9026566743850708,
+        "z": 0.5
+      },
+      "d_passive": 1.2318,
+      "d_active": 0.5534,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|11",
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-00.20|+01.16|00.00",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -0.19729512929916382,
+        "y": 1.157825231552124,
+        "z": -0.001000046730041504
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.0
+      },
+      "d_passive": 0.9462,
+      "d_active": 0.8027,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|11",
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_pairing_method": "object_id",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": 0.15499894320964813,
+        "y": 1.099259376525879,
+        "z": 0.6169992685317993
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "d_passive": 0.6401,
+      "d_active": 0.6401,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|11",
+      "scene": "FloorPlan3",
+      "seed": 11,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|-01.83|+01.33|-01.05",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101836442947388,
+        "z": -0.9019978046417236
+      },
+      "p_true": {
+        "x": -1.8265241384506226,
+        "y": 1.3283932209014893,
+        "z": -1.0492291450500488
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 1.123205542564392,
+        "z": -1.0
+      },
+      "d_passive": 2.098,
+      "d_active": 0.828,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|11",
+      "scene": "FloorPlan201",
+      "seed": 11,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.33|+00.61|+04.69",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -2.3260953426361084,
+        "y": 0.6103484630584717,
+        "z": 4.689019203186035
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.25,
+        "y": 0.9026566743850708,
+        "z": 4.25
+      },
+      "d_passive": 4.0459,
+      "d_active": 0.4456,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|11",
+      "scene": "FloorPlan201",
+      "seed": 11,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.27|+00.69|+01.30",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -2.2689051628112793,
+        "y": 0.6909467577934265,
+        "z": 1.2991931438446045
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -2.25,
+        "y": 0.9026566743850708,
+        "z": 0.5
+      },
+      "d_passive": 1.1994,
+      "d_active": 0.7994,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|17",
+      "scene": "FloorPlan1",
+      "seed": 17,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-01.77|+00.96|-00.51",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -1.7748464345932007,
+        "y": 0.9576252102851868,
+        "z": -0.5130009651184082
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.900999128818512,
+        "z": -0.5
+      },
+      "d_passive": 1.2754,
+      "d_active": 0.525,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|17",
+      "scene": "FloorPlan1",
+      "seed": 17,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|-00.34|+01.11|-00.76",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": -0.3354904055595398,
+        "y": 1.1071525812149048,
+        "z": -0.7593218088150024
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": -0.25,
+        "y": 0.900999128818512,
+        "z": -1.25
+      },
+      "d_passive": 2.0929,
+      "d_active": 0.4981,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|17",
+      "scene": "FloorPlan3",
+      "seed": 17,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|+00.98|+01.23|+01.19",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101836442947388,
+        "z": -0.9019978046417236
+      },
+      "p_true": {
+        "x": 0.9756708741188049,
+        "y": 1.225113868713379,
+        "z": 1.193561315536499
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": 1.25
+      },
+      "d_passive": 2.0746,
+      "d_active": 0.7279,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|17",
+      "scene": "FloorPlan201",
+      "seed": 17,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.25|+00.61|+05.16",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -2.248648166656494,
+        "y": 0.6103494167327881,
+        "z": 5.155003547668457
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.25,
+        "y": 0.9026566743850708,
+        "z": 5.5
+      },
+      "d_passive": 4.5174,
+      "d_active": 0.345,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|17",
+      "scene": "FloorPlan201",
+      "seed": 17,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.33|+00.61|+04.77",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -2.32609486579895,
+        "y": 0.6118695735931396,
+        "z": 4.7666826248168945
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -2.25,
+        "y": 0.9026566743850708,
+        "z": 4.25
+      },
+      "d_passive": 2.6053,
+      "d_active": 0.5223,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|23",
+      "scene": "FloorPlan1",
+      "seed": 23,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-01.91|+00.82|-01.50",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -1.9081000089645386,
+        "y": 0.8159813284873962,
+        "z": -1.5012340545654297
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.900999128818512,
+        "z": -1.5
+      },
+      "d_passive": 2.1976,
+      "d_active": 0.6581,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|23",
+      "scene": "FloorPlan1",
+      "seed": 23,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|-00.20|+01.11|-00.51",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": -0.19729512929916382,
+        "y": 1.1071525812149048,
+        "z": -0.5065479278564453
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": -0.25,
+        "y": 0.900999128818512,
+        "z": -1.25
+      },
+      "d_passive": 1.8126,
+      "d_active": 0.7453,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|23",
+      "scene": "FloorPlan3",
+      "seed": 23,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|-01.95|+01.05|-00.63",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101836442947388,
+        "z": -0.9019978046417236
+      },
+      "p_true": {
+        "x": -1.9545440673828125,
+        "y": 1.046301245689392,
+        "z": -0.6334444284439087
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "d_passive": 2.2076,
+      "d_active": 0.9616,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|23",
+      "scene": "FloorPlan201",
+      "seed": 23,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.40|+00.36|+05.00",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -2.402569532394409,
+        "y": 0.35650137066841125,
+        "z": 4.999700546264648
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.5,
+        "y": 0.9026566743850708,
+        "z": 5.5
+      },
+      "d_passive": 4.3334,
+      "d_active": 0.5097,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|23",
+      "scene": "FloorPlan201",
+      "seed": 23,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-01.11|+00.48|+06.02",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -1.1083509922027588,
+        "y": 0.47519180178642273,
+        "z": 6.0220627784729
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -1.5,
+        "y": 0.9026566743850708,
+        "z": 5.5
+      },
+      "d_passive": 4.2198,
+      "d_active": 0.6526,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|29",
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-00.06|+01.16|-00.25",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -0.05909985303878784,
+        "y": 1.157825231552124,
+        "z": -0.25377392768859863
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": -0.25
+      },
+      "d_passive": 1.2056,
+      "d_active": 0.9409,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|29",
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_pairing_method": "object_id",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": 0.15499892830848694,
+        "y": 1.099259614944458,
+        "z": 0.6169992685317993
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "d_passive": 0.6401,
+      "d_active": 0.6401,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|29",
+      "scene": "FloorPlan3",
+      "seed": 29,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|-02.05|+01.32|-02.20",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101832866668701,
+        "z": -0.901997983455658
+      },
+      "p_true": {
+        "x": -2.0498206615448,
+        "y": 1.3182514905929565,
+        "z": -2.2013492584228516
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 1.123205542564392,
+        "z": -2.25
+      },
+      "d_passive": 2.7195,
+      "d_active": 1.0509,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|29",
+      "scene": "FloorPlan201",
+      "seed": 29,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.05|+00.69|+01.05",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592267990112305,
+        "y": 0.68190997838974,
+        "z": 1.1773186922073364
+      },
+      "p_true": {
+        "x": -2.04706072807312,
+        "y": 0.6894252896308899,
+        "z": 1.0519264936447144
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.0,
+        "y": 0.9026566743850708,
+        "z": 0.5
+      },
+      "d_passive": 1.2403,
+      "d_active": 0.5539,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|29",
+      "scene": "FloorPlan201",
+      "seed": 29,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.48|+00.64|+05.00",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094925165176392
+      },
+      "p_true": {
+        "x": -2.4809844493865967,
+        "y": 0.6448278427124023,
+        "z": 4.999675750732422
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -2.5,
+        "y": 0.9026566743850708,
+        "z": 5.5
+      },
+      "d_passive": 2.7982,
+      "d_active": 0.5007,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|37",
+      "scene": "FloorPlan1",
+      "seed": 37,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|+01.85|+00.94|-02.56",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.4651539623737335,
+        "y": 1.151225209236145,
+        "z": 0.47574010491371155
+      },
+      "p_true": {
+        "x": 1.8533639907836914,
+        "y": 0.9380031824111938,
+        "z": -2.560202121734619
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": 1.75,
+        "y": 0.900999128818512,
+        "z": -2.0
+      },
+      "d_passive": 4.1841,
+      "d_active": 0.5697,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|37",
+      "scene": "FloorPlan1",
+      "seed": 37,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|-00.06|+01.11|-00.25",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499892830848694,
+        "y": 1.099259614944458,
+        "z": 0.6169992685317993
+      },
+      "p_true": {
+        "x": -0.05909985303878784,
+        "y": 1.1071525812149048,
+        "z": -0.25377392768859863
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": -0.25
+      },
+      "d_passive": 1.5352,
+      "d_active": 0.9409,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|37",
+      "scene": "FloorPlan3",
+      "seed": 37,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|+01.29|+01.32|-02.42",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101832866668701,
+        "z": -0.901997983455658
+      },
+      "p_true": {
+        "x": 1.2853460311889648,
+        "y": 1.3182514905929565,
+        "z": -2.4241156578063965
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": 0.0,
+        "y": 1.123205542564392,
+        "z": -2.25
+      },
+      "d_passive": 1.9684,
+      "d_active": 1.2971,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|37",
+      "scene": "FloorPlan201",
+      "seed": 37,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.76|+00.25|+06.14",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819102168083191,
+        "z": 1.1773194074630737
+      },
+      "p_true": {
+        "x": -2.7612736225128174,
+        "y": 0.24761426448822021,
+        "z": 6.135435104370117
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.75,
+        "y": 0.9026566743850708,
+        "z": 5.75
+      },
+      "d_passive": 5.4076,
+      "d_active": 0.3856,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|37",
+      "scene": "FloorPlan201",
+      "seed": 37,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.90|+00.61|-00.20",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094929933547974
+      },
+      "p_true": {
+        "x": -2.8997719287872314,
+        "y": 0.6147415041923523,
+        "z": -0.20023566484451294
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 0.25
+      },
+      "d_passive": 2.4523,
+      "d_active": 0.4613,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|43",
+      "scene": "FloorPlan1",
+      "seed": 43,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-01.96|+00.82|-01.24",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -1.963379979133606,
+        "y": 0.8159813284873962,
+        "z": -1.2421915531158447
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.900999128818512,
+        "z": -1.25
+      },
+      "d_passive": 1.9908,
+      "d_active": 0.7134,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|43",
+      "scene": "FloorPlan1",
+      "seed": 43,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|-00.06|+01.11|00.00",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": -0.05909985303878784,
+        "y": 1.1071525812149048,
+        "z": -0.001000046730041504
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.0
+      },
+      "d_passive": 1.2886,
+      "d_active": 0.9409,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|43",
+      "scene": "FloorPlan3",
+      "seed": 43,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|-01.24|+01.32|-03.31",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101832866668701,
+        "z": -0.901997983455658
+      },
+      "p_true": {
+        "x": -1.237309217453003,
+        "y": 1.3182514905929565,
+        "z": -3.314365863800049
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 1.123205542564392,
+        "z": -2.25
+      },
+      "d_passive": 2.9645,
+      "d_active": 1.0905,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|43",
+      "scene": "FloorPlan201",
+      "seed": 43,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-04.47|+00.47|+05.57",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -4.468652248382568,
+        "y": 0.4736576974391937,
+        "z": 5.574780464172363
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -4.25,
+        "y": 0.9026566743850708,
+        "z": 5.25
+      },
+      "d_passive": 4.9763,
+      "d_active": 0.3915,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|43",
+      "scene": "FloorPlan201",
+      "seed": 43,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.00|+00.73|+06.13",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -2.003399610519409,
+        "y": 0.7307149767875671,
+        "z": 6.134634494781494
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -2.0,
+        "y": 0.9026566743850708,
+        "z": 5.75
+      },
+      "d_passive": 4.0104,
+      "d_active": 0.3846,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|53",
+      "scene": "FloorPlan1",
+      "seed": 53,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|+01.10|+00.96|-02.25",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.4651539623737335,
+        "y": 1.151225209236145,
+        "z": 0.47574010491371155
+      },
+      "p_true": {
+        "x": 1.0981663465499878,
+        "y": 0.9569252133369446,
+        "z": -2.2535502910614014
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": 1.5,
+        "y": 0.900999128818512,
+        "z": -2.0
+      },
+      "d_passive": 3.4618,
+      "d_active": 0.4751,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|53",
+      "scene": "FloorPlan1",
+      "seed": 53,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|-00.20|+01.11|+00.76",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499892830848694,
+        "y": 1.099259614944458,
+        "z": 0.6169992685317993
+      },
+      "p_true": {
+        "x": -0.19729512929916382,
+        "y": 1.1071525812149048,
+        "z": 0.7573217153549194
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": -0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "d_passive": 0.6654,
+      "d_active": 0.4955,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|53",
+      "scene": "FloorPlan3",
+      "seed": 53,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|+01.22|+01.23|+01.09",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101836442947388,
+        "z": -0.9019978046417236
+      },
+      "p_true": {
+        "x": 1.2245635986328125,
+        "y": 1.2250908613204956,
+        "z": 1.0856235027313232
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": 1.0
+      },
+      "d_passive": 2.0783,
+      "d_active": 0.9783,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|53",
+      "scene": "FloorPlan201",
+      "seed": 53,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-00.82|+00.47|+05.66",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -0.8184103965759277,
+        "y": 0.47366395592689514,
+        "z": 5.659886837005615
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -0.5,
+        "y": 0.9026566743850708,
+        "z": 5.25
+      },
+      "d_passive": 5.479,
+      "d_active": 0.519,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|53",
+      "scene": "FloorPlan201",
+      "seed": 53,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.64|+00.25|+06.05",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -2.6363131999969482,
+        "y": 0.24915626645088196,
+        "z": 6.054827690124512
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -2.75,
+        "y": 0.9026566743850708,
+        "z": 5.75
+      },
+      "d_passive": 3.8222,
+      "d_active": 0.3253,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|67",
+      "scene": "FloorPlan1",
+      "seed": 67,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-01.91|+00.82|-01.76",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -1.9081000089645386,
+        "y": 0.8159813284873962,
+        "z": -1.7602760791778564
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.900999128818512,
+        "z": -1.75
+      },
+      "d_passive": 2.4359,
+      "d_active": 0.6582,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|67",
+      "scene": "FloorPlan1",
+      "seed": 67,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|-00.06|+01.11|-00.25",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": -0.05909985303878784,
+        "y": 1.1071525812149048,
+        "z": -0.25377392768859863
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": -0.25
+      },
+      "d_passive": 1.5352,
+      "d_active": 0.9409,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|67",
+      "scene": "FloorPlan3",
+      "seed": 67,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|+00.49|+01.32|-03.12",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101836442947388,
+        "z": -0.9019978046417236
+      },
+      "p_true": {
+        "x": 0.4920377731323242,
+        "y": 1.318251609802246,
+        "z": -3.121979236602783
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": 0.0,
+        "y": 1.123205542564392,
+        "z": -2.25
+      },
+      "d_passive": 2.3843,
+      "d_active": 1.0012,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|67",
+      "scene": "FloorPlan201",
+      "seed": 67,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.71|+00.69|+01.79",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -2.7125954627990723,
+        "y": 0.6894288063049316,
+        "z": 1.7937284708023071
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "d_passive": 1.174,
+      "d_active": 0.5392,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|67",
+      "scene": "FloorPlan201",
+      "seed": 67,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.10|+00.36|+04.92",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -2.0950698852539062,
+        "y": 0.3580213189125061,
+        "z": 4.92201042175293
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -1.75,
+        "y": 0.9026566743850708,
+        "z": 5.0
+      },
+      "d_passive": 2.8211,
+      "d_active": 0.3538,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|73",
+      "scene": "FloorPlan1",
+      "seed": 73,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-01.91|+00.82|-01.24",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -1.9081000089645386,
+        "y": 0.8159813284873962,
+        "z": -1.2421917915344238
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.900999128818512,
+        "z": -1.25
+      },
+      "d_passive": 1.9647,
+      "d_active": 0.6581,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|73",
+      "scene": "FloorPlan1",
+      "seed": 73,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|+00.71|+00.91|-02.48",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": 0.7115572690963745,
+        "y": 0.9062525629997253,
+        "z": -2.4839999675750732
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": 0.75,
+        "y": 0.900999128818512,
+        "z": -1.75
+      },
+      "d_passive": 3.7624,
+      "d_active": 0.735,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|73",
+      "scene": "FloorPlan3",
+      "seed": 73,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|-02.05|+01.32|-03.24",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101836442947388,
+        "z": -0.9019978046417236
+      },
+      "p_true": {
+        "x": -2.0498206615448,
+        "y": 1.318251609802246,
+        "z": -3.241100788116455
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 1.123205542564392,
+        "z": -2.25
+      },
+      "d_passive": 3.3904,
+      "d_active": 1.4437,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|73",
+      "scene": "FloorPlan201",
+      "seed": 73,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.77|+00.73|+06.54",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -2.767275333404541,
+        "y": 0.7290444374084473,
+        "z": 6.538873195648193
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.75,
+        "y": 0.9026566743850708,
+        "z": 5.75
+      },
+      "d_passive": 5.809,
+      "d_active": 0.7891,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|73",
+      "scene": "FloorPlan201",
+      "seed": 73,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-02.27|+00.69|+01.18",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -2.2689435482025146,
+        "y": 0.6909465789794922,
+        "z": 1.1755939722061157
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -2.25,
+        "y": 0.9026566743850708,
+        "z": 0.5
+      },
+      "d_passive": 1.2995,
+      "d_active": 0.6759,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|83",
+      "scene": "FloorPlan1",
+      "seed": 83,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-01.59|+00.96|-02.33",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -1.5860135555267334,
+        "y": 0.957625150680542,
+        "z": -2.329827308654785
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.900999128818512,
+        "z": -1.75
+      },
+      "d_passive": 2.8899,
+      "d_active": 0.6702,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|83",
+      "scene": "FloorPlan1",
+      "seed": 83,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|+00.22|+01.11|00.00",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": 0.2172906994819641,
+        "y": 1.1071525812149048,
+        "z": -0.001000046730041504
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": 1.0,
+        "y": 0.900999128818512,
+        "z": 0.0
+      },
+      "d_passive": 1.2514,
+      "d_active": 0.7827,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|83",
+      "scene": "FloorPlan3",
+      "seed": 83,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|-01.53|+01.32|-02.46",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.3101836442947388,
+        "z": -0.9019978046417236
+      },
+      "p_true": {
+        "x": -1.5308105945587158,
+        "y": 1.318251609802246,
+        "z": -2.461287021636963
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": -1.0,
+        "y": 1.123205542564392,
+        "z": -2.25
+      },
+      "d_passive": 2.4698,
+      "d_active": 0.5713,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|83",
+      "scene": "FloorPlan201",
+      "seed": 83,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.14|+00.56|+03.44",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592265605926514,
+        "y": 0.6819095611572266,
+        "z": 1.1773176193237305
+      },
+      "p_true": {
+        "x": -2.139698028564453,
+        "y": 0.5580195188522339,
+        "z": 3.4364631175994873
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.25,
+        "y": 0.9026566743850708,
+        "z": 4.25
+      },
+      "d_passive": 2.9069,
+      "d_active": 0.821,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|83",
+      "scene": "FloorPlan201",
+      "seed": 83,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-01.08|+00.48|+05.57",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094918012619019
+      },
+      "p_true": {
+        "x": -1.0750457048416138,
+        "y": 0.47518908977508545,
+        "z": 5.573294639587402
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -1.25,
+        "y": 0.9026566743850708,
+        "z": 5.25
+      },
+      "d_passive": 3.8405,
+      "d_active": 0.3676,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan1|Apple|97",
+      "scene": "FloorPlan1",
+      "seed": 97,
+      "target": "Apple",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Apple|-00.47|+01.15|+00.48",
+      "after_object_id": "Apple|-00.47|+01.16|+00.76",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -0.46515366435050964,
+        "y": 1.151225209236145,
+        "z": 0.47573861479759216
+      },
+      "p_true": {
+        "x": -0.47368568181991577,
+        "y": 1.157825231552124,
+        "z": 0.7573217153549194
+      },
+      "g_passive": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "z": 0.5
+      },
+      "g_active": {
+        "x": -0.5,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "d_passive": 0.5859,
+      "d_active": 0.4934,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan1|Book|97",
+      "scene": "FloorPlan1",
+      "seed": 97,
+      "target": "Book",
+      "spawn_ok": true,
+      "reachable_count": 162,
+      "before_object_id": "Book|+00.15|+01.10|+00.62",
+      "after_object_id": "Book|-00.20|+01.11|-00.51",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.15499891340732574,
+        "y": 1.0992599725723267,
+        "z": 0.6169993281364441
+      },
+      "p_true": {
+        "x": -0.19729512929916382,
+        "y": 1.1071525812149048,
+        "z": -0.5065479278564453
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "z": 1.25
+      },
+      "g_active": {
+        "x": -0.25,
+        "y": 0.900999128818512,
+        "z": -1.25
+      },
+      "d_passive": 1.8126,
+      "d_active": 0.7453,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan3|Cup|97",
+      "scene": "FloorPlan3",
+      "seed": 97,
+      "target": "Cup",
+      "spawn_ok": true,
+      "reachable_count": 115,
+      "before_object_id": "Cup|+00.68|+01.31|-00.90",
+      "after_object_id": "Cup|+00.81|+01.23|+00.55",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": 0.6819939613342285,
+        "y": 1.310182809829712,
+        "z": -0.9019980430603027
+      },
+      "p_true": {
+        "x": 0.8095210790634155,
+        "y": 1.2251005172729492,
+        "z": 0.5464197993278503
+      },
+      "g_passive": {
+        "x": 0.25,
+        "y": 1.123205542564392,
+        "z": -0.75
+      },
+      "g_active": {
+        "x": 0.5,
+        "y": 1.123205542564392,
+        "z": 0.25
+      },
+      "d_passive": 1.412,
+      "d_active": 0.4286,
+      "qualifies": false,
+      "status": "below_threshold"
+    },
+    {
+      "candidate_id": "FloorPlan201|Newspaper|97",
+      "scene": "FloorPlan201",
+      "seed": 97,
+      "target": "Newspaper",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Newspaper|-02.76|+00.68|+01.18",
+      "after_object_id": "Newspaper|-02.40|+00.56|+03.80",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.7592267990112305,
+        "y": 0.68190997838974,
+        "z": 1.1773186922073364
+      },
+      "p_true": {
+        "x": -2.404787063598633,
+        "y": 0.5580195188522339,
+        "z": 3.7952840328216553
+      },
+      "g_passive": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "z": 0.75
+      },
+      "g_active": {
+        "x": -2.5,
+        "y": 0.9026566743850708,
+        "z": 4.25
+      },
+      "d_passive": 3.1604,
+      "d_active": 0.4646,
+      "qualifies": true,
+      "status": "qualifies"
+    },
+    {
+      "candidate_id": "FloorPlan201|Pencil|97",
+      "scene": "FloorPlan201",
+      "seed": 97,
+      "target": "Pencil",
+      "spawn_ok": true,
+      "reachable_count": 234,
+      "before_object_id": "Pencil|-02.83|+00.68|+01.51",
+      "after_object_id": "Pencil|-00.30|+00.71|+03.54",
+      "after_pairing_method": "unique_type",
+      "p_stale": {
+        "x": -2.831773519515991,
+        "y": 0.6845982074737549,
+        "z": 1.5094925165176392
+      },
+      "p_true": {
+        "x": -0.3023742139339447,
+        "y": 0.7091068625450134,
+        "z": 3.5385191440582275
+      },
+      "g_passive": {
+        "x": -3.0,
+        "y": 0.9026566743850708,
+        "z": 2.25
+      },
+      "g_active": {
+        "x": -0.75,
+        "y": 0.9026566743850708,
+        "z": 3.5
+      },
+      "d_passive": 2.9896,
+      "d_active": 0.4493,
+      "qualifies": true,
+      "status": "qualifies"
+    }
+  ],
+  "frozen_case_list": [
+    {
+      "row_idx": 0,
+      "case_id": "FloorPlan1|Apple|7",
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Apple",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 3.3076,
+      "d_active": 0.5816
+    },
+    {
+      "row_idx": 1,
+      "case_id": "FloorPlan1|Apple|23",
+      "scene": "FloorPlan1",
+      "seed": 23,
+      "target": "Apple",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 2.1976,
+      "d_active": 0.6581
+    },
+    {
+      "row_idx": 2,
+      "case_id": "FloorPlan1|Apple|37",
+      "scene": "FloorPlan1",
+      "seed": 37,
+      "target": "Apple",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 4.1841,
+      "d_active": 0.5697
+    },
+    {
+      "row_idx": 3,
+      "case_id": "FloorPlan1|Apple|53",
+      "scene": "FloorPlan1",
+      "seed": 53,
+      "target": "Apple",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 3.4618,
+      "d_active": 0.4751
+    },
+    {
+      "row_idx": 4,
+      "case_id": "FloorPlan1|Apple|67",
+      "scene": "FloorPlan1",
+      "seed": 67,
+      "target": "Apple",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 2.4359,
+      "d_active": 0.6582
+    },
+    {
+      "row_idx": 5,
+      "case_id": "FloorPlan1|Apple|83",
+      "scene": "FloorPlan1",
+      "seed": 83,
+      "target": "Apple",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 2.8899,
+      "d_active": 0.6702
+    },
+    {
+      "row_idx": 6,
+      "case_id": "FloorPlan1|Book|17",
+      "scene": "FloorPlan1",
+      "seed": 17,
+      "target": "Book",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 2.0929,
+      "d_active": 0.4981
+    },
+    {
+      "row_idx": 7,
+      "case_id": "FloorPlan1|Book|73",
+      "scene": "FloorPlan1",
+      "seed": 73,
+      "target": "Book",
+      "role": "paired_hard_challenge_frozen",
+      "expected_risk": "geometry_discriminative_pre_registered",
+      "d_passive": 3.7624,
+      "d_active": 0.735
+    }
+  ],
+  "claim_boundary": "geometry_only_case_construction; uses AI2-THOR simulator metadata for screening and freezing only; no GSAM, no verification, no memory mutation, no task execution; not broad scale, not ObjectNav/SPL, not a manipulation benchmark, not passive-vs-active superiority"
+}

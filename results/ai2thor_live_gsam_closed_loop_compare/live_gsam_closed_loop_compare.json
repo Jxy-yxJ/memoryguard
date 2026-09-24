@@ -1,0 +1,74 @@
+{
+  "schema_version": "ai2thor_live_gsam_closed_loop_compare.v1",
+  "status": "ok",
+  "input_files": [
+    "results/ai2thor_live_gsam_closed_loop/live_gsam_closed_loop.json"
+  ],
+  "input_rows": 20,
+  "source_schema_versions": [
+    "ai2thor_live_gsam_closed_loop.v1"
+  ],
+  "source_statuses": [
+    "ok"
+  ],
+  "claim_boundary": "CPU-only recorded-row comparison of existing live_gsam_closed_loop artifacts; no new live experiment result; no AI2-THOR, GSAM, Habitat, navigation, manipulation, ObjectNav, task success, persistent memory repair/writeback, recovery-search, or Habitat object-level transfer; oracle labels are evaluation-only and never used for policy inclusion or ranking",
+  "summary_variants": [
+    {
+      "variant": "passive_no_verification",
+      "selected_rows": 0,
+      "labelled_rows_among_selected": 0,
+      "agreement_rows_among_selected": 0,
+      "agreement_rows": 0,
+      "agreement_rate": null,
+      "stale_decision_rows": 0,
+      "oracle_stale_rows_among_selected_labels": 0,
+      "proposed_update_rows": 0,
+      "memory_updated_rows": 0,
+      "mean_expected_verification_value": null,
+      "true_positive_rows_among_selected": 0,
+      "false_positive_rows_among_selected": 0,
+      "true_negative_rows_among_selected": 0,
+      "false_negative_rows_among_selected": 0,
+      "false_negative_rate_among_labelled_selected": null,
+      "false_positive_rate_among_labelled_selected": null
+    },
+    {
+      "variant": "recorded_ev_gate",
+      "selected_rows": 20,
+      "labelled_rows_among_selected": 20,
+      "agreement_rows_among_selected": 15,
+      "agreement_rows": 15,
+      "agreement_rate": 0.75,
+      "stale_decision_rows": 13,
+      "oracle_stale_rows_among_selected_labels": 18,
+      "proposed_update_rows": 0,
+      "memory_updated_rows": 0,
+      "mean_expected_verification_value": null,
+      "true_positive_rows_among_selected": 13,
+      "false_positive_rows_among_selected": 0,
+      "true_negative_rows_among_selected": 2,
+      "false_negative_rows_among_selected": 5,
+      "false_negative_rate_among_labelled_selected": 0.25,
+      "false_positive_rate_among_labelled_selected": 0.0
+    },
+    {
+      "variant": "recorded_budgeted_ev_gate",
+      "selected_rows": 20,
+      "labelled_rows_among_selected": 20,
+      "agreement_rows_among_selected": 15,
+      "agreement_rows": 15,
+      "agreement_rate": 0.75,
+      "stale_decision_rows": 13,
+      "oracle_stale_rows_among_selected_labels": 18,
+      "proposed_update_rows": 0,
+      "memory_updated_rows": 0,
+      "mean_expected_verification_value": null,
+      "true_positive_rows_among_selected": 13,
+      "false_positive_rows_among_selected": 0,
+      "true_negative_rows_among_selected": 2,
+      "false_negative_rows_among_selected": 5,
+      "false_negative_rate_among_labelled_selected": 0.25,
+      "false_positive_rate_among_labelled_selected": 0.0
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "schema": "preregistered_two_case_closed_loop_result_to_claim.v1",
+  "date": "2026-05-25",
+  "protocol_artifact": "results/ai2thor_live_gsam_preregistered_two_case_floorplan1_apple_v1/FOLLOWUP_PROTOCOL.md",
+  "source_artifact": "results/ai2thor_live_gsam_preregistered_two_case_floorplan1_apple_v1/live_gsam_closed_loop.json",
+  "log": "logs/live_gsam_preregistered_two_case_floorplan1_apple_v1.log",
+  "verdict": "yes_preregistered_two_case_floorplan1_apple_reproduction; no_broad_scale_claim",
+  "pre_registered_cases": [
+    {
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Apple"
+    },
+    {
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Apple"
+    }
+  ],
+  "protocol_compliance": {
+    "row_count": 2,
+    "expected_case_count": 2,
+    "observed_cases": [
+      {
+        "scene": "FloorPlan1",
+        "seed": 29,
+        "target": "Apple"
+      },
+      {
+        "scene": "FloorPlan1",
+        "seed": 11,
+        "target": "Apple"
+      }
+    ],
+    "no_extra_or_missing_cases": true,
+    "verification_budget": 2,
+    "teleport_object_used": false
+  },
+  "summary": {
+    "rows": 2,
+    "labelled_rows": 2,
+    "agreement_rows": 2,
+    "agreement_rate": 1.0,
+    "verifier_used_rows": 2,
+    "policy_verified_rows": 2,
+    "policy_skipped_rows": 0,
+    "mean_expected_verification_value": 0.77,
+    "verification_budget": 2,
+    "candidate_rows": 2,
+    "budget_selected_rows": 2,
+    "budget_skipped_rows": 0,
+    "mean_selected_expected_verification_value": 0.77,
+    "memory_update_candidate_rows": 2,
+    "memory_updated_rows": 2,
+    "task_execution_evaluated_rows": 2,
+    "task_execution_not_executed_rows": 0,
+    "downstream_task_success_rows": 2,
+    "downstream_task_failure_rows": 0,
+    "case_list_source": null,
+    "case_list_rows": 0,
+    "case_list_matched_rows": 0,
+    "case_list_unmatched_rows": 0,
+    "case_list_unmatched_cases": [],
+    "controller_started": true,
+    "scenes": [
+      "FloorPlan1"
+    ],
+    "seeds": [
+      29,
+      11
+    ],
+    "threshold": 0.05,
+    "nav_search_steps": 0,
+    "nav_search_rows": 0,
+    "instance_ambiguity_rows": 0,
+    "ev_variant": "calibrated",
+    "same_type_density_rows": 0,
+    "visual_instance_confusion_prior_rows": 0,
+    "teleport_object_used": false
+  },
+  "pass_criteria": {
+    "spawn_success": true,
+    "revisit_action": "stepwise_navigation",
+    "used_teleportfull_for_revisit": false,
+    "revisit_navigation_failure_reason": null,
+    "policy_should_verify": true,
+    "verifier_used": true,
+    "decision_stale": true,
+    "memory_mutated": true,
+    "task_execution_evaluated": true,
+    "task_bridge_navigation_mode": "stepwise_navigation",
+    "task_bridge_used_teleportfull": false,
+    "task_bridge_navigation_failure_reason": null,
+    "execute_action": "PickupObject",
+    "downstream_task_success": true
+  },
+  "case_scores": [
+    {
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Apple",
+      "passed": true,
+      "checks": {
+        "spawn_success": true,
+        "revisit_action": true,
+        "used_teleportfull_for_revisit": true,
+        "revisit_navigation_failure_reason": true,
+        "policy_should_verify": true,
+        "verifier_used": true,
+        "decision_stale": true,
+        "memory_mutated": true,
+        "task_execution_evaluated": true,
+        "task_bridge_navigation_mode": true,
+        "task_bridge_used_teleportfull": true,
+        "task_bridge_navigation_failure_reason": true,
+        "execute_action": true,
+        "downstream_task_success": true
+      },
+      "revisit_path_steps": 2,
+      "revisit_navigation_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "task_bridge_path_steps": 5,
+      "task_bridge_navigation_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "distance_from_remembered": 0.8349294875402472,
+      "decision_detections_considered": 3,
+      "decision_matched_distance": 0.1309
+    },
+    {
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Apple",
+      "passed": true,
+      "checks": {
+        "spawn_success": true,
+        "revisit_action": true,
+        "used_teleportfull_for_revisit": true,
+        "revisit_navigation_failure_reason": true,
+        "policy_should_verify": true,
+        "verifier_used": true,
+        "decision_stale": true,
+        "memory_mutated": true,
+        "task_execution_evaluated": true,
+        "task_bridge_navigation_mode": true,
+        "task_bridge_used_teleportfull": true,
+        "task_bridge_navigation_failure_reason": true,
+        "execute_action": true,
+        "downstream_task_success": true
+      },
+      "revisit_path_steps": 2,
+      "revisit_navigation_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "task_bridge_path_steps": 4,
+      "task_bridge_navigation_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "distance_from_remembered": 0.5468505005688225,
+      "decision_detections_considered": 3,
+      "decision_matched_distance": 0.1309
+    }
+  ],
+  "aggregate_evidence": {
+    "all_cases_passed": true,
+    "passed_cases": 2,
+    "failed_cases": 0,
+    "downstream_task_success_rows": 2,
+    "downstream_task_failure_rows": 0,
+    "memory_updated_rows": 2,
+    "verifier_used_rows": 2
+  },
+  "what_results_support": [
+    "The two pre-registered FloorPlan1/Apple positives, seeds 29 and 11, reproduced in one fixed run under the same live GSAM closed-loop protocol.",
+    "Both rows completed live spawn, stepwise revisit without TeleportFull, GSAM stale verification, detector-backed in-memory refresh, stepwise task bridge without TeleportFull, and downstream PickupObject success.",
+    "The run followed the frozen two-case protocol with no extra rows and no missing rows."
+  ],
+  "what_results_do_not_support": [
+    "No broad scaling claim across scenes, seeds, rooms, objects, or target categories.",
+    "No statistical navigation rate, SPL/ObjectNav, manipulation benchmark, persistent memory writeback, cross-platform transfer, or general active-maintenance success claim.",
+    "No claim that known blockers are solved: FloorPlan1 seed7 Apple collision_stuck and FloorPlan201 Pencil stepwise bridge failures remain negative evidence.",
+    "No passive-vs-active downstream task-performance superiority claim."
+  ],
+  "claim_boundary": "Pre-registered two-case FloorPlan1/Apple reproduction only: seeds 29 and 11 reproduce non-Teleport closed-loop GSAM verify/update/task-bridge PickupObject success in one fixed two-row run. This is not broad scale, statistical success, ObjectNav/SPL, manipulation benchmarking, passive-vs-active superiority, persistent writeback, cross-platform transfer, or broad active maintenance.",
+  "next_evidence_needed": [
+    "A small pre-registered mixed set that includes known hard negatives if robustness is the next claim target.",
+    "A task-executing passive/stale baseline if claiming downstream benefit rather than guarded-path reproduction.",
+    "Independent Habitat or second-platform perception-backed verify/update evidence before transfer claims."
+  ]
+}

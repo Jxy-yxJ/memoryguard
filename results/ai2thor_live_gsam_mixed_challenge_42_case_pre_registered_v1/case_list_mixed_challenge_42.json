@@ -1,0 +1,345 @@
+{
+  "schema": "live_gsam_mixed_challenge_case_list.v2",
+  "date": "2026-05-25",
+  "case_count": 42,
+  "cases": [
+    {
+      "row_idx": 0,
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 1,
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 2,
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 3,
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 4,
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 5,
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 6,
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 7,
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 8,
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 9,
+      "scene": "FloorPlan1",
+      "seed": 37,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 10,
+      "scene": "FloorPlan1",
+      "seed": 37,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 11,
+      "scene": "FloorPlan1",
+      "seed": 37,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 12,
+      "scene": "FloorPlan1",
+      "seed": 43,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 13,
+      "scene": "FloorPlan1",
+      "seed": 43,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 14,
+      "scene": "FloorPlan1",
+      "seed": 43,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 15,
+      "scene": "FloorPlan1",
+      "seed": 67,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 16,
+      "scene": "FloorPlan1",
+      "seed": 67,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 17,
+      "scene": "FloorPlan1",
+      "seed": 67,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 18,
+      "scene": "FloorPlan1",
+      "seed": 73,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 19,
+      "scene": "FloorPlan1",
+      "seed": 73,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 20,
+      "scene": "FloorPlan1",
+      "seed": 73,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 21,
+      "scene": "FloorPlan1",
+      "seed": 83,
+      "target": "Apple",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 22,
+      "scene": "FloorPlan1",
+      "seed": 83,
+      "target": "Cup",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 23,
+      "scene": "FloorPlan1",
+      "seed": 83,
+      "target": "Mug",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 24,
+      "scene": "FloorPlan201",
+      "seed": 7,
+      "target": "Pencil",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 25,
+      "scene": "FloorPlan201",
+      "seed": 7,
+      "target": "Book",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 26,
+      "scene": "FloorPlan201",
+      "seed": 7,
+      "target": "Newspaper",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 27,
+      "scene": "FloorPlan201",
+      "seed": 11,
+      "target": "Pencil",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 28,
+      "scene": "FloorPlan201",
+      "seed": 11,
+      "target": "Book",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 29,
+      "scene": "FloorPlan201",
+      "seed": 11,
+      "target": "Newspaper",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 30,
+      "scene": "FloorPlan201",
+      "seed": 29,
+      "target": "Pencil",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 31,
+      "scene": "FloorPlan201",
+      "seed": 29,
+      "target": "Book",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 32,
+      "scene": "FloorPlan201",
+      "seed": 29,
+      "target": "Newspaper",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 33,
+      "scene": "FloorPlan201",
+      "seed": 37,
+      "target": "Pencil",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 34,
+      "scene": "FloorPlan201",
+      "seed": 37,
+      "target": "Book",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 35,
+      "scene": "FloorPlan201",
+      "seed": 37,
+      "target": "Newspaper",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 36,
+      "scene": "FloorPlan201",
+      "seed": 43,
+      "target": "Pencil",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 37,
+      "scene": "FloorPlan201",
+      "seed": 43,
+      "target": "Book",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 38,
+      "scene": "FloorPlan201",
+      "seed": 43,
+      "target": "Newspaper",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 39,
+      "scene": "FloorPlan201",
+      "seed": 67,
+      "target": "Pencil",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 40,
+      "scene": "FloorPlan201",
+      "seed": 67,
+      "target": "Book",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    },
+    {
+      "row_idx": 41,
+      "scene": "FloorPlan201",
+      "seed": 67,
+      "target": "Newspaper",
+      "role": "pre_registered_expanded_challenge",
+      "expected_risk": "unknown_pre_registered"
+    }
+  ],
+  "description": "Pre-registered 42-case expanded challenge: FloorPlan1 (8 seeds \u00d7 3 kitchen targets) + FloorPlan201 (6 seeds \u00d7 3 living room targets). All cases pre-registered before execution to avoid cherry-picking.",
+  "claim_boundary": "Pre-registered expanded fixed challenge; not broad scale, not statistical robustness, not ObjectNav/SPL, not manipulation benchmark. Reports mechanism evidence across a pre-defined case distribution."
+}

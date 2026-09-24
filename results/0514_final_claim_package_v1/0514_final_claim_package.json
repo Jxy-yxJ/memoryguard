@@ -1,0 +1,133 @@
+{
+  "schema": "0514_final_claim_package.v1",
+  "date": "2026-05-25",
+  "title": "0514 Final Claim Package",
+  "source_goal": "Embodied memory maintenance under environmental change",
+  "source_document": "/home/jxy/文档/Obsidian Vault/论文推进0514.md",
+  "thesis_alignment": {
+    "original_problem": "stale memory is harmful; move from passive replay/oracle verification to active closed-loop memory maintenance",
+    "current_supported_direction": "controller-backed active memory maintenance under bounded sensing/navigation budget",
+    "not_supported": [
+      "broad scale",
+      "ObjectNav/SPL statistics",
+      "manipulation benchmark performance",
+      "passive-vs-active superiority",
+      "persistent writeback",
+      "cross-platform transfer",
+      "broad active maintenance"
+    ]
+  },
+  "evidence_chain": [
+    {
+      "stage": "failure_taxonomy_and_calibration",
+      "artifacts": [
+        "results/0514_paper_ready_synthesis/0514_paper_ready_synthesis.md",
+        "results/0514_gap_audit/0514_gap_audit.md",
+        "results/0514_metric_coverage/0514_metric_coverage.md"
+      ],
+      "supported_claim": "budgeted verification and visual-prior calibration reduce selected strict detector false negatives on a targeted protocol",
+      "boundary": "targeted detector-calibration evidence only"
+    },
+    {
+      "stage": "single_case_closed_loop",
+      "artifacts": [
+        "results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_v1/live_gsam_closed_loop.json",
+        "results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_v1/complete_closed_loop_single_case_result_to_claim.json"
+      ],
+      "supported_claim": "one selected FloorPlan1/seed29/Apple row completes live spawn -> stepwise revisit -> GSAM stale verification -> detector-backed memory mutation -> stepwise task bridge -> PickupObject success without TeleportFull on measured paths",
+      "boundary": "single-case mechanism/task-success smoke"
+    },
+    {
+      "stage": "guarded_control",
+      "artifacts": [
+        "results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_passive_control_v1/live_gsam_closed_loop.json",
+        "results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_v1/single_case_active_vs_passive_control_result_to_claim.json"
+      ],
+      "supported_claim": "the guarded path only runs after detector-backed memory refresh; the high-threshold no-verify control skips verification, mutation, and task bridge",
+      "boundary": "guarded-path control only"
+    },
+    {
+      "stage": "selected_two_case_replication",
+      "artifacts": [
+        "results/ai2thor_live_gsam_complete_closed_loop_seed11_apple_v1/live_gsam_closed_loop.json",
+        "results/ai2thor_live_gsam_complete_closed_loop_seed11_apple_v1/complete_closed_loop_two_case_replication_result_to_claim.json",
+        "results/ai2thor_live_gsam_preregistered_two_case_floorplan1_apple_v1/live_gsam_closed_loop.json",
+        "results/ai2thor_live_gsam_preregistered_two_case_floorplan1_apple_v1/preregistered_two_case_result_to_claim.json"
+      ],
+      "supported_claim": "the same strict non-Teleport closed-loop sequence reproduces on a second selected FloorPlan1/Apple case and on the pre-registered two-case sweep",
+      "boundary": "selected same-scene/same-target reproduction only"
+    },
+    {
+      "stage": "mixed_challenge_boundary",
+      "artifacts": [
+        "results/ai2thor_live_gsam_mixed_challenge_floorplan1_201_v1/live_gsam_closed_loop.json",
+        "results/ai2thor_live_gsam_mixed_challenge_waypoint_route_v1/live_gsam_closed_loop.json",
+        "results/ai2thor_live_gsam_mixed_challenge_budgetfix_v1/live_gsam_closed_loop.json",
+        "results/ai2thor_live_gsam_mixed_challenge_budgetfix_v1/mixed_challenge_budgetfix_result_to_claim.json"
+      ],
+      "supported_claim": "adaptive stepwise budgeting converts the same frozen six-case Apple/Pencil mixed challenge from 2/6 to 6/6 downstream PickupObject successes without TeleportFull on measured paths",
+      "boundary": "fixed-challenge mechanism evidence only"
+    },
+    {
+      "stage": "holdout_audit",
+      "artifacts": [
+        "results/ai2thor_live_gsam_holdout_availability_audit_v1/holdout_availability_audit.json"
+      ],
+      "supported_claim": "under a frozen evidence-grounded local-artifact rule, there are zero eligible unseen holdout cases, so no new holdout run is performed",
+      "boundary": "stop/package decision only"
+    }
+  ],
+  "claim_matrix": [
+    {
+      "level": "supported_now",
+      "claim": "In controller-backed AI2-THOR live GSAM traces, MemoryGuard can perform bounded active memory maintenance through detector-backed verification/update and non-Teleport measured task execution on the frozen Apple/Pencil challenge set."
+    },
+    {
+      "level": "supported_now",
+      "claim": "The fixed mixed challenge and its pre-registered reproductions show selected positives reproduce while hard cases expose a concrete boundary; the budget fix removes one failure mode on that fixed challenge."
+    },
+    {
+      "level": "not_supported",
+      "claim": "Broad active maintenance, statistical robustness, ObjectNav/SPL, manipulation benchmark performance, passive-vs-active superiority, persistent writeback, cross-platform transfer, or a learned/general uncertainty model."
+    }
+  ],
+  "requirements_alignment": {
+    "P1_de_oracle_perception_verification": "partially_covered",
+    "P1_uncertainty_ev_model": "partially_covered",
+    "P1_true_closed_loop_execute": "partially_covered_to_strong_mechanism",
+    "P2_non_shortcut_navigation": "partially_covered_mechanism_success",
+    "P2_scale_upgrade": "missing",
+    "P2_platform_upgrade": "future_work",
+    "P2_metrics_upgrade": "partially_covered",
+    "P2_perception_baselines": "partial_bookkeeping",
+    "S1_claim_scope_audit": "covered"
+  },
+  "remaining_gaps": [
+    "No statistical success-rate / confidence-interval claim.",
+    "No broad scene, seed, object, or platform diversity claim.",
+    "No live OpenObject or natural downstream failure-row claim as a general result.",
+    "No verified Habitat perception-backed verify/update/task run yet.",
+    "No centralized verification-latency metric."
+  ],
+  "recommended_next_paths": [
+    "Write the paper around the fixed-challenge mechanism claim plus explicit limitations.",
+    "If broad scale is desired, pre-register a larger case-generation universe before any new run.",
+    "If platform breadth is desired, move to the Habitat verify/update smoke as a separate Stage 2 line."
+  ],
+  "verification_summary": {
+    "inputs_checked": [
+      "0514 paper-ready synthesis",
+      "0514 gap audit",
+      "0514 metric coverage",
+      "0514 second-platform design",
+      "mixed challenge budgetfix result-to-claim",
+      "holdout availability audit",
+      "original 0514 target note"
+    ],
+    "no_new_experiments": true,
+    "fresh_verification_artifacts": [
+      "results/ai2thor_live_gsam_mixed_challenge_budgetfix_v1/mixed_challenge_budgetfix_result_to_claim.json",
+      "results/ai2thor_live_gsam_holdout_availability_audit_v1/holdout_availability_audit.json"
+    ]
+  }
+}

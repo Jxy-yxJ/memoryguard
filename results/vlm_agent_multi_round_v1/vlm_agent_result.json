@@ -1,0 +1,42 @@
+{
+  "schema": "vlm_agent_multi_round.v1",
+  "model": "Qwen3-VL-32B-Instruct",
+  "results": [
+    {
+      "case": "seed11 Apple",
+      "R1": "FRESH",
+      "R2": "SKIP",
+      "R3": "SKIP"
+    },
+    {
+      "case": "seed29 Apple",
+      "R1": "FRESH",
+      "R2": "SKIP",
+      "R3": "SKIP"
+    },
+    {
+      "case": "seed7 Apple",
+      "R1": "FRESH",
+      "R2": "SKIP",
+      "R3": "SKIP"
+    },
+    {
+      "case": "seed7 Pencil",
+      "R1": "STALE",
+      "R2": "SEARCH",
+      "R3": "SKIP"
+    },
+    {
+      "case": "seed11 Pencil",
+      "R1": "STALE",
+      "R2": "SEARCH",
+      "R3": "SKIP"
+    },
+    {
+      "case": "seed7 Newspaper",
+      "R1": "STALE",
+      "R2": "SEARCH",
+      "R3": "SKIP"
+    }
+  ]
+}

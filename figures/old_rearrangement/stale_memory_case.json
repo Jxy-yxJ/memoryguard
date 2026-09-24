@@ -1,0 +1,26 @@
+{
+  "source_probe": "results/ai2thor_rearrangement_6scene_seed31/ai2thor_rearrangement_probe.json",
+  "seed": "31",
+  "scene": "FloorPlan3",
+  "target": "SaltShaker",
+  "budget": 16,
+  "threshold": 0.2,
+  "verification_cost": 0.5,
+  "selected_before_location": "FloorPlan3:SaltShaker|+00.33|+01.31|-02.83@before",
+  "true_after_location": "FloorPlan3:SaltShaker|+00.21|+01.32|-02.68@after",
+  "task_old_location": "FloorPlan3:SaltShaker|+00.33|+01.31|-02.83@before",
+  "direct_after_cost": 1.5,
+  "stale_action_cost": 1.5,
+  "fallback_search_cost": 13.35,
+  "risk_score": 0.7292,
+  "retained_item": {
+    "object_name": "SaltShaker",
+    "observed_at": 44,
+    "salience": 0.9,
+    "volatility": 0.25,
+    "demand": 0.45
+  },
+  "salience_outcome": "stale_error",
+  "verification_outcome": "stale_caught_then_scene_search_recovery",
+  "rearranged": true
+}

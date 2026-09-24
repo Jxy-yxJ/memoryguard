@@ -1,0 +1,44 @@
+{
+  "schema": "single_case_active_vs_passive_control.v1",
+  "date": "2026-05-25",
+  "active_artifact": "results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_v1/live_gsam_closed_loop.json",
+  "passive_control_artifact": "results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_passive_control_v1/live_gsam_closed_loop.json",
+  "verdict": "yes_single_case_guarded_active_path_vs_no_verify_control; no_policy_superiority_claim",
+  "comparison": {
+    "case": {
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Apple"
+    },
+    "active": {
+      "policy_should_verify": true,
+      "verifier_used": true,
+      "decision_stale": true,
+      "memory_mutated": true,
+      "used_teleportfull_for_revisit": false,
+      "task_bridge_used_teleportfull": false,
+      "execute_action": "PickupObject",
+      "downstream_task_success": true
+    },
+    "passive_control": {
+      "policy_should_verify": false,
+      "verifier_used": false,
+      "decision_stale": null,
+      "memory_mutated": false,
+      "used_teleportfull_for_revisit": false,
+      "task_execution_evaluated": false,
+      "execute_action": "not_executed",
+      "downstream_task_success": null
+    }
+  },
+  "what_results_support": [
+    "On the same FloorPlan1/seed29/Apple case, the guarded active path verifies stale memory, mutates the memory snapshot, and completes a non-TeleportFull stepwise PickupObject bridge.",
+    "The high-threshold no-verify control follows the same live revisit instrumentation but is not selected for verification, does not mutate memory, and does not execute the guarded task bridge.",
+    "The control confirms the current runner gates task-bridge execution on detector-backed memory refresh."
+  ],
+  "what_results_do_not_support": [
+    "No passive-vs-active policy superiority claim: passive task execution is not implemented here, so this is a guarded-path control rather than a performance baseline.",
+    "No statistical navigation/task success, manipulation benchmark, persistent writeback, cross-platform transfer, or broad active-maintenance claim."
+  ],
+  "claim_boundary": "Single-case guarded-path comparison only: active verify/update path completes, high-threshold no-verify control does not execute the guarded bridge. Not active-vs-passive task-performance superiority."
+}

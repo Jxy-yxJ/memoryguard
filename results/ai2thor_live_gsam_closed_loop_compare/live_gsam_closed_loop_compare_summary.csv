@@ -1,0 +1,4 @@
+variant,selected_rows,labelled_rows_among_selected,agreement_rows_among_selected,agreement_rows,agreement_rate,stale_decision_rows,oracle_stale_rows_among_selected_labels,proposed_update_rows,memory_updated_rows,mean_expected_verification_value,true_positive_rows_among_selected,false_positive_rows_among_selected,true_negative_rows_among_selected,false_negative_rows_among_selected,false_negative_rate_among_labelled_selected,false_positive_rate_among_labelled_selected
+passive_no_verification,0,0,0,0,,0,0,0,0,,0,0,0,0,,
+recorded_ev_gate,20,20,15,15,0.75,13,18,0,0,,13,0,2,5,0.25,0.0
+recorded_budgeted_ev_gate,20,20,15,15,0.75,13,18,0,0,,13,0,2,5,0.25,0.0

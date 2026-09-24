@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.venv-ai2thor/
+
+# Large model checkpoints / weights
+checkpoints/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store

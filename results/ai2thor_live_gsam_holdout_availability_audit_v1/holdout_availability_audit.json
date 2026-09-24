@@ -1,0 +1,199 @@
+{
+  "schema": "holdout_availability_audit.v1",
+  "date": "2026-05-25",
+  "verdict": "no_eligible_unseen_evidence_grounded_holdout_cases; stop_before_new_run",
+  "purpose": "Audit whether a non-cherry-picked four-case holdout can be frozen after the budget-fix 6/6 mixed challenge result.",
+  "selection_rule": {
+    "candidate_universe": "Existing local ai2thor_live_gsam_* live_gsam_closed_loop.json rows only.",
+    "exclude_cases": "All cases already used in selected positives, preregistered two-case reproduction, mixed challenge, waypoint rerun, and budgetfix rerun.",
+    "eligibility": "Pickupable row with prior detector-stale evidence and prior detector-backed memory mutation, so the existing runner can plausibly reach the verify/update/task-bridge path without hand-picking after results.",
+    "ordering": "Sort eligible cases by (scene, target, seed) and choose first four only if at least four eligible unseen cases exist.",
+    "stop_rule": "If fewer than four eligible unseen cases exist, do not substitute hand-picked cases and do not run a holdout."
+  },
+  "excluded_cases": [
+    {
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Apple",
+      "reason": "used_in_selected_positive_and_mixed_challenge"
+    },
+    {
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Apple",
+      "reason": "used_in_selected_positive_and_mixed_challenge"
+    },
+    {
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Apple",
+      "reason": "used_in_mixed_challenge_hard_case"
+    },
+    {
+      "scene": "FloorPlan201",
+      "seed": 7,
+      "target": "Pencil",
+      "reason": "used_in_mixed_challenge_hard_case"
+    },
+    {
+      "scene": "FloorPlan201",
+      "seed": 11,
+      "target": "Pencil",
+      "reason": "used_in_mixed_challenge_hard_case"
+    },
+    {
+      "scene": "FloorPlan201",
+      "seed": 29,
+      "target": "Pencil",
+      "reason": "used_in_mixed_challenge_hard_case"
+    }
+  ],
+  "audit_counts": {
+    "used_case_count": 6,
+    "all_pickupable_case_keys_seen_count": 12,
+    "unseen_pickupable_candidate_keys_count": 6,
+    "eligible_unseen_candidate_count": 0,
+    "required_holdout_case_count": 4,
+    "holdout_run_performed": false
+  },
+  "eligible_unseen_candidates": [],
+  "ineligible_unseen_candidates": [
+    {
+      "scene": "FloorPlan1",
+      "seed": 7,
+      "target": "Book",
+      "prior_stale": false,
+      "prior_memory_mutated": false,
+      "prior_downstream_success": false,
+      "prior_stepwise_failure": false,
+      "source_count": 3,
+      "example_sources": [
+        "results/ai2thor_live_gsam_wave4_task_bridge_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v2",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v3"
+      ],
+      "ineligible_reasons": [
+        "no_prior_detector_stale_row",
+        "no_prior_memory_mutated_row"
+      ]
+    },
+    {
+      "scene": "FloorPlan1",
+      "seed": 11,
+      "target": "Book",
+      "prior_stale": false,
+      "prior_memory_mutated": false,
+      "prior_downstream_success": false,
+      "prior_stepwise_failure": false,
+      "source_count": 3,
+      "example_sources": [
+        "results/ai2thor_live_gsam_wave4_task_bridge_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v2",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v3"
+      ],
+      "ineligible_reasons": [
+        "no_prior_detector_stale_row",
+        "no_prior_memory_mutated_row"
+      ]
+    },
+    {
+      "scene": "FloorPlan1",
+      "seed": 29,
+      "target": "Book",
+      "prior_stale": false,
+      "prior_memory_mutated": false,
+      "prior_downstream_success": false,
+      "prior_stepwise_failure": false,
+      "source_count": 3,
+      "example_sources": [
+        "results/ai2thor_live_gsam_wave4_task_bridge_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v2",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v3"
+      ],
+      "ineligible_reasons": [
+        "no_prior_detector_stale_row",
+        "no_prior_memory_mutated_row"
+      ]
+    },
+    {
+      "scene": "FloorPlan201",
+      "seed": 7,
+      "target": "Newspaper",
+      "prior_stale": false,
+      "prior_memory_mutated": false,
+      "prior_downstream_success": false,
+      "prior_stepwise_failure": false,
+      "source_count": 4,
+      "example_sources": [
+        "results/ai2thor_live_gsam_nonactionable_verified_sweep_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v2",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v3"
+      ],
+      "ineligible_reasons": [
+        "no_prior_detector_stale_row",
+        "no_prior_memory_mutated_row"
+      ]
+    },
+    {
+      "scene": "FloorPlan201",
+      "seed": 11,
+      "target": "Newspaper",
+      "prior_stale": false,
+      "prior_memory_mutated": false,
+      "prior_downstream_success": false,
+      "prior_stepwise_failure": false,
+      "source_count": 4,
+      "example_sources": [
+        "results/ai2thor_live_gsam_nonactionable_verified_sweep_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v2",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v3"
+      ],
+      "ineligible_reasons": [
+        "no_prior_detector_stale_row",
+        "no_prior_memory_mutated_row"
+      ]
+    },
+    {
+      "scene": "FloorPlan201",
+      "seed": 29,
+      "target": "Newspaper",
+      "prior_stale": false,
+      "prior_memory_mutated": false,
+      "prior_downstream_success": false,
+      "prior_stepwise_failure": false,
+      "source_count": 4,
+      "example_sources": [
+        "results/ai2thor_live_gsam_nonactionable_verified_sweep_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v1",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v2",
+        "results/ai2thor_live_gsam_wave4_task_bridge_v3"
+      ],
+      "ineligible_reasons": [
+        "no_prior_detector_stale_row",
+        "no_prior_memory_mutated_row"
+      ]
+    }
+  ],
+  "decision": {
+    "action": "stop_and_package_current_budgetfix_evidence",
+    "reason": "The fixed non-cherry-pick rule produced zero eligible unseen holdout cases. Running new hand-selected cases would weaken auditability and overstate scale.",
+    "next_valid_paths": [
+      "Define and preregister a larger case-generation universe before any new run.",
+      "Add route/path-quality metrics on the existing fixed challenge instead of claiming broader scale.",
+      "Move to second-platform Habitat only with a separate preregistered perception-backed verify/update/task protocol."
+    ]
+  },
+  "what_results_support": [
+    "There is no eligible unseen four-case holdout available under the current evidence-grounded local artifact universe and exclusion rule.",
+    "The correct next action under this rule is to stop before a new run rather than substitute hand-picked cases.",
+    "The budgetfix 6/6 result remains bounded to the fixed six-case mixed challenge."
+  ],
+  "what_results_do_not_support": [
+    "No broad scale or statistical robustness claim.",
+    "No claim that the budgetfix transfers to unseen scenes, seeds, targets, or task families.",
+    "No claim that lack of eligible local holdout cases is evidence of general success."
+  ],
+  "claim_boundary": "Holdout availability audit only: under a frozen evidence-grounded rule, there are zero eligible unseen local holdout cases, so no new holdout run is performed. This supports stopping/packaging the fixed-challenge budgetfix evidence, not broad scale or generalization."
+}
