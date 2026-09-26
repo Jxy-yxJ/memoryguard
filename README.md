@@ -28,6 +28,76 @@ A key finding is that reliable staleness *detection* is not the same as reliable
 *maintenance*: a strong vision-language model detects staleness in 6/6 cases yet makes the correct
 update decision in only 3/6.
 
+## How it works
+
+MemoryGuard keeps an object memory of `(class, pose)` records and runs a bounded
+**verify → update → act** loop over it.
+
+**1. Score — which memories are worth verifying.**
+Before any observation, each memory receives an expected-verification-value score from cheap
+signals: whether the target was visible on the last revisit, its distance from the remembered
+pose, and a per-class visual-confusion indicator (for visually confusable classes such as Book,
+Newspaper and Pencil). Under a verification budget `B`, the top-`B` memories are selected. The
+score is deliberately simple and auditable so that the mechanism evidence is not confounded by a
+learned ranker; the loop is signal-agnostic and any `P(stale)` estimator — including a VLM-based
+one — can replace it.
+
+**2. Verify — perception-backed staleness detection.**
+A stepwise controller navigates to the remembered pose (no `TeleportFull` on measured paths) and
+captures the live RGB frame. An open-vocabulary detector — Grounding DINO + SAM 2 ("GSAM") —
+decides whether the remembered object is still there and, if stale, returns a detection-grounded
+candidate location. Oracle simulator metadata is used **only** for offline labels and case
+construction, never as a policy input.
+
+**3. Update — detector-backed memory refresh.**
+When the verifier marks a memory stale, the record is refreshed in place from the detector
+evidence. Each update stores the old position, the new position, the verifier confidence, and a
+machine-readable update-source string, so every memory mutation is traceable.
+
+**4. Act — guarded, honest task execution.**
+The agent navigates to the refreshed location and attempts the downstream action
+(`PickupObject`). Interaction is *honest*: `forceAction=False` so the simulator enforces proximity
+and visibility, a yaw-corrected face-then-pick step, a camera-horizon sweep (down 60°, up 30°),
+and a bounded approach fallback over up to three nearby reachable poses when the target is not
+visible from the first pose.
+
+**Auditability.** Every row records whether the verifier was used, the stale decision, whether
+memory was mutated, the measured revisit/task paths, `TeleportFull`/`TeleportObject` flags, and a
+failure reason, so claims can be traced back to individual decisions.
+
+### Evaluation protocol
+
+Claims are tested with a **paired** design rather than aggregate success rates. Cases are
+pre-registered and passed through an outcome-free geometry screen (the stale remembered location
+is at least 2 m from the true object and the refreshed location within 1.5 m, the target is
+pickupable, and same-type pairing is unambiguous). Active and passive arms then run the **same
+frozen cases**, the same scene/seed/spawn, the same stepwise navigation, and the same honest
+interaction; the passive arm acts from the stale location with no verifier and no memory mutation.
+We report exact counts, McNemar exact tests, and Clopper-Pearson intervals, and replicate on
+held-out scenes, target classes, and seeds.
+
+---
+
+## Contributions
+
+- **Problem framing.** Treats stale object memory as a *bounded active-maintenance* problem —
+  deciding which memories to verify under a limited sensing and navigation budget — instead of
+  passive replay detection or oracle-metadata verification.
+- **A detector-agnostic verify–update–act loop** with a bounded budget and row-level
+  auditability, driven by a deliberately simple pre-verification ranking signal that any learned
+  `P(stale)` estimator can replace.
+- **An honest-interaction paired evaluation protocol.** Pre-registered, geometry-screened, paired
+  active-vs-passive challenges with frozen case lists, exact statistics, and held-out replication —
+  including the diagnosis and fix of the facing-angle failure that the first honest run exposed.
+- **Empirical findings.** (i) Perception-backed active maintenance discriminates from stale
+  passive execution (29/32 vs 0/34; replicated at 11/11 and 22/24 on unseen cases); (ii) budgeted
+  ranking cuts selected strict detector false negatives from 6 to 1 on the FN-prone protocol;
+  (iii) strong vision-language models detect staleness (6/6) but fail maintenance (3/6 correct
+  updates, 0/6 full chains) — detection is not maintenance; (iv) same-type instance confusion is
+  the dominant verifier error mode (8/8 false negatives) and is live-run sensitive.
+- **Open artifacts.** Pre-registrations, frozen case lists, per-row run outputs, analysis code and
+  statistics, and demo videos are all included in this repository.
+
 ---
 
 ## Demo
