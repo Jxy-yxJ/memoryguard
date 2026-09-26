@@ -4,6 +4,12 @@
 
 **面向长程具身智能体的有界主动记忆维护。**
 
+[![tests](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml/badge.svg)](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+*江鑫宇（[@Jxy-yxJ](https://github.com/Jxy-yxJ)）*
+
+
 MemoryGuard 研究长程具身记忆中的一个具体失效模式：环境变化后，记忆中某个物体的位置会悄悄变*陈旧*，
 下游任务因为按过时记忆行动而失败。与其存入记忆后指望它一直有效，MemoryGuard 把记忆视为必须在**有界
 预算下主动维护**的对象：在行动之前，它先判断某条记忆是否值得核验，用接地的感知/检测信号去核验，在陈
@@ -232,6 +238,20 @@ python scripts/make_demo_video.py --row-source results/active/live_gsam_closed_l
 - 在冻结的几何筛选案例集之外的“主动优于被动”结论。
 
 Oracle 仿真器元数据**仅**用于案例构造与离线评估——绝不作为策略输入、排序特征或可部署检测器。
+
+## 引用
+
+如果 MemoryGuard 对你的研究有帮助，请引用本仓库：
+
+```bibtex
+@misc{jiang2026memoryguard,
+  title        = {MemoryGuard: Bounded Active Memory Maintenance for Long-Horizon Embodied Agents},
+  author       = {Jiang, Xinyu},
+  year         = {2026},
+  howpublished = {\url{https://github.com/Jxy-yxJ/MemoryGuard}},
+  note         = {Open-source research software}
+}
+```
 
 ## 作者
 

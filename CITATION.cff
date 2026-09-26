@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use MemoryGuard in your research, please cite this repository."
+title: "MemoryGuard: Bounded Active Memory Maintenance for Long-Horizon Embodied Agents"
+abstract: >-
+  MemoryGuard studies stale object memory in long-horizon embodied agents and provides a bounded
+  verify-update-act loop for active memory maintenance, with pre-registered paired evaluations in
+  AI2-THOR and held-out replication on unseen scenes, target classes, and seeds.
+authors:
+  - family-names: Jiang
+    given-names: Xinyu
+    alias: Jxy-yxJ
+    website: "https://github.com/Jxy-yxJ"
+version: 0.2.0
+date-released: "2026-09-26"
+license: MIT
+url: "https://github.com/Jxy-yxJ/MemoryGuard"
+repository-code: "https://github.com/Jxy-yxJ/MemoryGuard"
+keywords:
+  - embodied-agents
+  - memory-maintenance
+  - stale-memory
+  - ai2-thor
+  - grounded-sam2
+  - robotics

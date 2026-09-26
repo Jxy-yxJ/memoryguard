@@ -4,6 +4,12 @@
 
 **Bounded active memory maintenance for long-horizon embodied agents.**
 
+[![tests](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml/badge.svg)](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+*Xinyu Jiang ([@Jxy-yxJ](https://github.com/Jxy-yxJ))*
+
+
 MemoryGuard studies a concrete failure mode of long-horizon embodied memory: a remembered
 object location silently becomes *stale* after the environment changes, and a downstream task
 then fails because it acts on the outdated memory. Instead of storing memory and hoping it stays
@@ -272,6 +278,20 @@ claim:
 
 Oracle simulator metadata is used **only** for case construction and offline evaluation — never as
 a policy input, ranking feature, or deployable detector.
+
+## Citation
+
+If you use MemoryGuard in your research, please cite this repository:
+
+```bibtex
+@misc{jiang2026memoryguard,
+  title        = {MemoryGuard: Bounded Active Memory Maintenance for Long-Horizon Embodied Agents},
+  author       = {Jiang, Xinyu},
+  year         = {2026},
+  howpublished = {\url{https://github.com/Jxy-yxJ/MemoryGuard}},
+  note         = {Open-source research software}
+}
+```
 
 ## Author
 

@@ -7,9 +7,10 @@ set -euo pipefail
 # using the FloorPlan3 capture dirs. See results/ai2thor_grounded_sam2_floorplan3_*_real_semantic_fix/
 # For new seeds/scenes, collect fresh captures first via:
 #   conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_rearrangement_benchmark --collect-scenes ...
-REPO=/home/jxy/MemoryGuard-v2
-CKPT_DIR=/home/jxy/MemoryGuard/checkpoints
-BASE_CACHE=/home/jxy/.cache/memoryguard-grounded-sam2-src-unpacked2
+REPO="${REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
+CKPT_DIR="${CKPT_DIR:-$REPO/checkpoints}"
+BASE_CACHE="${BASE_CACHE:-$HOME/.cache/memoryguard-grounded-sam2-src-unpacked2}"
+CONDA_ENV="${CONDA_ENV:-memoryguard-grounded-sam2}"
 GD_CONFIG="$BASE_CACHE/GroundingDINO-main/groundingdino/config/GroundingDINO_SwinT_OGC.py"
 GD_CKPT="$CKPT_DIR/groundingdino_swint_ogc.pth"
 SAM2_CKPT="$CKPT_DIR/sam2.1_hiera_tiny.pt"
