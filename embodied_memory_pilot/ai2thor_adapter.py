@@ -14,6 +14,25 @@ from typing import Any, Dict, List
 DEFAULT_SCENE = "FloorPlan1"
 DEFAULT_OBJECTS = ("Mug", "Apple", "Knife", "RemoteControl", "Book")
 DEFAULT_PROBE_ACTIONS = ("Pass", "RotateRight", "RotateRight", "RotateRight", "RotateRight")
+RICH_BEFORE_PROBE_ACTIONS = (
+    "Pass",
+    "RotateRight",
+    "RotateRight",
+    "RotateRight",
+    "RotateRight",
+    "LookDown",
+    "Pass",
+    "RotateRight",
+    "RotateRight",
+    "RotateRight",
+    "RotateRight",
+    "LookDown",
+    "Pass",
+    "RotateRight",
+    "RotateRight",
+    "RotateRight",
+    "RotateRight",
+)
 
 
 @dataclass(frozen=True)
@@ -400,7 +419,7 @@ def render_scene_probe_readme(result: Dict[str, Any]) -> str:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="AI2-THOR optional adapter for MemoryGuard embodied memory pilots.")
+    parser = argparse.ArgumentParser(description="AI2-THOR adapter for embodied memory maintenance experiments.")
     parser.add_argument("--scene", default=DEFAULT_SCENE)
     parser.add_argument("--out-dir", type=Path, default=Path("results/ai2thor_smoke"))
     parser.add_argument("--check-only", action="store_true", help="only write dependency capability report")

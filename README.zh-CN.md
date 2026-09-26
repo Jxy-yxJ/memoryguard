@@ -25,11 +25,22 @@ Grounded-SAM2 检测器，或视觉语言模型）。一个关键发现是：可
 
 ---
 
+## 演示视频
+
+![MemoryGuard 对比被动基线：并排演示](videos/demo_comparison.gif)
+
+*左：被动智能体按陈旧记忆行动，到达记忆中的旧位置（红 X）却一无所获。右：MemoryGuard 先核验记忆、
+判定其陈旧、刷新位置，再导航到物体的真实新位置（绿圈）并完成抓取。视频由真实仿真帧渲染；完整分辨率
+片段见 [`videos/`](videos/)。*
+
+---
+
 ## 核心结果
 
 | 结果 | 设置 | 数值 |
 |---|---|---|
-| **配对式 被动 vs 主动 挑战** | 预注册、几何筛选的 AI2-THOR 挑战（冻结 36 个案例 / 34 个可评估配对） | 主动 verify–update–act **22/34**，实时被动陈旧记忆 **0/36**；McNemar 精确双侧 **p = 4.768e-07**；预注册判定 `discriminative_support` |
+| **配对式 被动 vs 主动 挑战** | 预注册、几何筛选的 AI2-THOR 挑战（冻结 36 个案例 / 32 个可评估配对；修正后的交互协议） | 主动 verify–update–act **29/32（91%）**，实时被动陈旧记忆 **0/34**；McNemar 精确双侧 **p = 3.7e-09** |
+| **Held-out 复现** | 未见过场景、目标类别与随机种子（11 例 pilot 与 24 例 v2） | 主动 **11/11** 对 被动 **0/11**（p = 9.8e-04）；主动 **22/24** 对 被动 **0/24**（p = 4.8e-07） |
 | **实时闭环检测器** | 30 条控制器真实运行的行，使用实时 `InitialRandomSpawn`，不使用 `TeleportObject` | 与离线标签一致 **22/30**；20/30 条记忆被刷新；期望核验价值非均匀（均值 0.7287） |
 | **逐步任务环（无传送捷径）** | 冻结的 6 案例混合挑战 | 自适应的、随路径长度缩放的行动预算，把下游 `PickupObject` 成功率从 **2/6 提升到 6/6** |
 | **VLM 诊断基线** | Qwen3-VL-32B 基于原始前后帧 | 陈旧检测 **6/6**，正确更新 **3/6**；多轮智能体完成完整链路 **0/6** |
@@ -47,14 +58,32 @@ Grounded-SAM2 检测器，或视觉语言模型）。一个关键发现是：可
 的错误位置（`d_passive >= 2.0m`）；而 *主动* 智能体通过核验与刷新，可以到达附近的正确位置
 （`d_active <= 1.5m`）。全部 36 个合格案例在两个分支运行前就已冻结。
 
-- **主动分支：** 34 个可评估配对中成功 22 个
-- **实时被动分支：** 36 行中成功 0 个（诚实交互，`forceAction=False`）
-- **配对精确检验：** McNemar 双侧 **p = 4.768e-07**
-- 有 2 条主动行不可评估（检测器漏检），予以如实报告而非剔除。
+- **主动分支：** 32 个可评估配对中成功 29 个（91%）
+- **实时被动分支：** 34 行中成功 0 个（诚实交互，`forceAction=False`）
+- **配对精确检验：** McNemar 双侧 **p = 3.7e-09**；主动分支 95% Clopper-Pearson 置信区间 [0.75, 0.98]
+- 有 2 条主动行不可评估（检测器漏检），另有 2 个冻结案例因仿真器崩溃丢失；均如实报告而非剔除。
 
-证据文件：`results/0514_paired_hard_challenge_v1/`、`results/0514_paired_hard_challenge_screen_v1/`。
+**协议修正。** 最初的诚实交互版本使用了错误的偏航角公式，导致主动成功率被低估（22/34）。修正后的协议
+改用正确的朝向计算，扩展了相机俯仰扫描范围，并为主动分支加入了有界的三候选位姿回退；旧的修正前数字
+仅作为开发过程参考保留。
 
-### 2. 实时、控制器驱动的闭环检测器
+证据文件：`results/0514_corrected_interaction_v1/`、`results/0514_paired_hard_challenge_screen_v1/`。
+
+### 2. 在未见场景/目标/种子上进行 held-out 复现
+
+两个 held-out 挑战沿用同一冻结协议，但使用未见过的场景（不含 FloorPlan1/3/201）、未见过的目标类别
+（不含 Apple/Book/Cup/Newspaper/Pencil）和未见过的随机种子。pilot 冻结 11 例；更大的 v2 在六个未见
+场景、八个未见“场景-目标”组合上冻结 24 例，并使用已披露的更丰富的初始探测。
+
+- **Held-out pilot：** 主动 **11/11**，被动 **0/11**（McNemar 精确 p = 9.8e-04）
+- **Held-out v2：** 主动 **22/24（92%）**，被动 **0/24**（McNemar 精确 p = 4.8e-07；主动分支
+  95% 置信区间 [0.73, 0.99]）
+- 剩余 2 例主动失败是被遮挡的目标，即使启用位姿回退也始终不可见；均如实报告而非剔除。
+
+证据文件：`results/0514_corrected_interaction_v1/holdout_v1_active/`、
+`results/0514_corrected_interaction_v1/holdout_v2_active/`。
+
+### 3. 实时、控制器驱动的闭环检测器
 
 在 30 行的扫描中，策略侧唯一的陈旧检测器是运行在实时 `InitialRandomSpawn` 之后的 Grounded-SAM2 核验
 器；oracle 元数据**仅**用于离线标签。检测器与离线标签的一致率为 **22/30 (0.7333)**，期望核验价值
@@ -63,7 +92,7 @@ Grounded-SAM2 检测器，或视觉语言模型）。一个关键发现是：可
 证据文件：`results/ai2thor_live_gsam_closed_loop_post_05822d3/`、
 `results/ai2thor_live_gsam_closed_loop_compare/`。
 
-### 3. 不依赖导航捷径的完整 verify–update–act 环
+### 4. 不依赖导航捷径的完整 verify–update–act 环
 
 在冻结的 6 案例混合挑战上，一个自适应的、随路径长度缩放的行动预算，把逐步（不使用 `TeleportFull`）
 的闭环从 2/6 提升到 **6/6** 次下游 `PickupObject` 成功，且行动前已用检测器证据刷新记忆。
@@ -71,7 +100,7 @@ Grounded-SAM2 检测器，或视觉语言模型）。一个关键发现是：可
 证据文件：`results/ai2thor_live_gsam_mixed_challenge_budgetfix_v1/`、
 `results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_v1/`。
 
-### 4. 检测不等于维护（VLM 基线）
+### 5. 检测不等于维护（VLM 基线）
 
 一个视觉语言模型（Qwen3-VL-32B）仅凭原始帧就在全部 6 个混合挑战案例上正确判断了陈旧性，但在 3/6
 上选错了更新方向——小物体/被遮挡物体因为从变化后的视角不可见而被判为“保留”。一个多轮 VLM 智能体
@@ -94,9 +123,12 @@ embodied_memory_pilot/        # 核心库：基准、核验器、实时闭环运
   ai2thor_*.py                #   AI2-THOR 探测、重排基准、实时 GSAM 环
   *_verifier.py               #   oracle / MLP / CLIP / Grounded-SAM2 陈旧核验器
   maintenance / stress        #   主动维护策略与受控压力测试
-tests/                        # 单元测试（核验器 schema、预算、失败记账）
-scripts/                      # 批量运行 / 分析辅助脚本
+tests/                        # 单元测试（核验器 schema、预算、诚实交互、筛选）
+scripts/                      # 批量运行 / 分析 / 演示辅助脚本
+  make_demo_video.py           #   渲染带字幕的双面板演示视频
+  analyze_paired_hard_challenge.py  # 配对统计、精确检验、Clopper-Pearson 置信区间
 figures/                      # 论文级图表（PNG）
+videos/                       # 演示视频（mp4）与 README 动图
 results/                      # 精选证据产物（JSON/CSV/MD + 部分帧图）
 run_b3_remaining_seeds.sh     # 种子扫描的批量运行参考
 ```
@@ -108,7 +140,7 @@ AI2-THOR 相关实验使用独立的 conda 环境。
 ```bash
 conda create -n memoryguard-ai2thor python=3.11 -y
 conda activate memoryguard-ai2thor
-pip install ai2thor grounded-sam2   # 以及纯 CPU 运行所需的项目依赖
+pip install -r requirements.txt     # 另需从上游仓库安装 Grounding DINO 与 SAM 2
 
 # 单元测试
 python -m unittest discover -s tests
@@ -117,8 +149,27 @@ python -m unittest discover -s tests
 conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop \
     --out-dir results/ai2thor_live_gsam_closed_loop
 
-# 对已记录运行行做纯 CPU 分析
-python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop_compare --help
+# 配对式被动 vs 主动挑战：筛选、双臂运行、分析
+conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_paired_hard_challenge_screen \
+    --scene-targets FloorPlan2:Egg FloorPlan5:Bread --seeds 101 103 107 --k 4 \
+    --freeze-mode round_robin --probe-mode rich --out-dir results/screen
+
+conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop \
+    --scenes FloorPlan2 FloorPlan5 --seeds 101 103 107 \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json \
+    --verification-budget 4 --revisit-mode stepwise --execute-task-bridge \
+    --honest-interaction --max-alternate-poses 3 --rich-before-probe --out-dir results/active
+
+conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_paired_task_bridge_control \
+    results/active/live_gsam_closed_loop.json --live-passive --honest-interaction --out-dir results/paired
+
+python scripts/analyze_paired_hard_challenge.py --active results/active/live_gsam_closed_loop.json \
+    --paired results/paired/paired_task_bridge_control.json \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json --out-dir results/analysis
+
+# 为已记录的案例渲染演示视频
+python scripts/make_demo_video.py --row-source results/active/live_gsam_closed_loop.json \
+    --case FloorPlan2:Potato:101 --mode active --out-dir videos
 ```
 
 ## 适用范围与局限

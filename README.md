@@ -30,11 +30,23 @@ update decision in only 3/6.
 
 ---
 
+## Demo
+
+![MemoryGuard vs passive baseline: side-by-side](videos/demo_comparison.gif)
+
+*Left: a passive agent acting on stale memory arrives at the remembered location (red X) and finds
+nothing. Right: MemoryGuard verifies the memory, refreshes it, navigates to the object's new
+location (green circle), and picks it up. Rendered from real simulator frames; full-resolution
+clips are in [`videos/`](videos/).*
+
+---
+
 ## Highlights
 
 | Result | Setting | Numbers |
 |---|---|---|
-| **Paired passive-vs-active challenge** | Pre-registered, geometry-screened AI2-THOR challenge (36 frozen cases / 34 evaluable pairs) | Active verify–update–act **22/34** vs. live passive stale-memory **0/36**; McNemar exact two-sided **p = 4.768e-07**; pre-registered decision `discriminative_support` |
+| **Paired passive-vs-active challenge** | Pre-registered, geometry-screened AI2-THOR challenge (36 frozen cases / 32 evaluable pairs; corrected interaction protocol) | Active verify–update–act **29/32 (91%)** vs. live passive stale-memory **0/34**; McNemar exact two-sided **p = 3.7e-09** |
+| **Held-out replication** | Unseen scenes, target classes, and seeds (11-case pilot and 24-case v2) | Active **11/11** vs. passive **0/11** (p = 9.8e-04) and active **22/24** vs. passive **0/24** (p = 4.8e-07) |
 | **Live closed-loop detector** | 30 controller-backed rows with live `InitialRandomSpawn`, no `TeleportObject` | **22/30** agreement with offline labels; 20/30 memories mutated; non-uniform expected verification value (mean 0.7287) |
 | **Stepwise task loop (no teleport shortcut)** | Fixed 6-case mixed challenge | Adaptive route-aware action budget lifts downstream `PickupObject` success from **2/6 → 6/6** |
 | **VLM diagnostic baseline** | Qwen3-VL-32B on raw before/after frames | Staleness detection **6/6**, correct update **3/6**; multi-round agent completes **0/6** full chains |
@@ -54,14 +66,36 @@ acting on stale memory is forced to a far, wrong location (`d_passive >= 2.0m`) 
 agent that verifies and refreshes can reach a nearby correct one (`d_active <= 1.5m`). All 36
 qualifying cases were frozen before either arm ran.
 
-- **Active arm:** 22 successes / 34 evaluable pairs
-- **Live passive arm:** 0 successes / 36 rows (honest interaction, `forceAction=False`)
-- **Paired exact test:** McNemar two-sided **p = 4.768e-07**
-- 2 active rows were not evaluable (detector false negatives) and are reported, not excluded.
+- **Active arm:** 29 successes / 32 evaluable pairs (91%)
+- **Live passive arm:** 0 successes / 34 rows (honest interaction, `forceAction=False`)
+- **Paired exact test:** McNemar two-sided **p = 3.7e-09**; 95% Clopper-Pearson CI for the active arm [0.75, 0.98]
+- 2 active rows were not evaluable (detector false negatives) and 2 frozen cases were lost to a
+  simulator crash; both are reported, not excluded.
 
-Artifacts: `results/0514_paired_hard_challenge_v1/`, `results/0514_paired_hard_challenge_screen_v1/`.
+**Protocol correction.** An initial honest-interaction sweep faced targets with an incorrect yaw
+formula and under-reported active success (22/34). The corrected protocol fixes the facing angle,
+extends the camera-horizon sweep, and adds a bounded three-pose approach fallback for the active
+arm; the archived pre-fix numbers are kept only as a development reference.
 
-### 2. A live, controller-backed closed-loop detector
+Artifacts: `results/0514_corrected_interaction_v1/`, `results/0514_paired_hard_challenge_screen_v1/`.
+
+### 2. Held-out replication on unseen scenes, targets, and seeds
+
+Two held-out challenges reuse the frozen protocol but unseen scenes (no FloorPlan1/3/201), unseen
+target classes (no Apple/Book/Cup/Newspaper/Pencil), and unseen seeds. The pilot froze 11 cases;
+the larger v2 froze 24 cases across six unseen scenes and eight unseen scene-target combinations,
+using a disclosed richer before-state probe.
+
+- **Held-out pilot:** active **11/11** vs. passive **0/11** (McNemar exact p = 9.8e-04)
+- **Held-out v2:** active **22/24 (92%)** vs. passive **0/24** (McNemar exact p = 4.8e-07;
+  95% CI for the active arm [0.73, 0.99])
+- The 2 remaining active failures are occluded targets that stay invisible even after the approach
+  fallback; they are reported, not excluded.
+
+Artifacts: `results/0514_corrected_interaction_v1/holdout_v1_active/`,
+`results/0514_corrected_interaction_v1/holdout_v2_active/`.
+
+### 3. A live, controller-backed closed-loop detector
 
 In a 30-row sweep the only policy-side staleness detector is a Grounded-SAM2 verifier running
 after a live `InitialRandomSpawn`; oracle metadata is used **only** for offline labels. Detector
@@ -71,7 +105,7 @@ and 20/30 stale rows trigger a within-session memory refresh.
 Artifacts: `results/ai2thor_live_gsam_closed_loop_post_05822d3/`,
 `results/ai2thor_live_gsam_closed_loop_compare/`.
 
-### 3. The full verify–update–act loop without navigation shortcuts
+### 4. The full verify–update–act loop without navigation shortcuts
 
 On a frozen 6-case mixed challenge, an adaptive, route-length-aware action budget converts a
 stepwise (non-`TeleportFull`) loop from 2/6 to **6/6** downstream `PickupObject` successes, with
@@ -80,7 +114,7 @@ memory refreshed from detector evidence before acting.
 Artifacts: `results/ai2thor_live_gsam_mixed_challenge_budgetfix_v1/`,
 `results/ai2thor_live_gsam_complete_closed_loop_seed29_apple_v1/`.
 
-### 4. Detection is not maintenance (VLM baseline)
+### 5. Detection is not maintenance (VLM baseline)
 
 A vision-language model (Qwen3-VL-32B) judged staleness correctly on all 6 mixed-challenge cases
 from raw frames, but chose the wrong update direction on 3/6 — small/occluded objects were
@@ -102,12 +136,15 @@ Artifacts: `results/vlm_agent_multi_round_v1/`.
 
 ```
 embodied_memory_pilot/        # core library: benchmarks, verifiers, live closed-loop runners
-  ai2thor_*.py                #   AI2-THOR probes, rearrangement benchmarks, live GSAM loops
+  ai2thor_*.py                #   probes, paired-challenge screening, live GSAM loops, paired control
   *_verifier.py               #   oracle / MLP / CLIP / Grounded-SAM2 staleness verifiers
   maintenance / stress        #   proactive-maintenance policies and controlled stress tests
-tests/                        # unit tests (verifier schemas, budgets, failure accounting)
-scripts/                      # batch run / analysis helpers
+tests/                        # unit tests (verifier schemas, budgets, honest interaction, screening)
+scripts/                      # batch run / analysis / demo helpers
+  make_demo_video.py           #   render captioned two-panel demo videos
+  analyze_paired_hard_challenge.py  # paired statistics, exact tests, Clopper-Pearson intervals
 figures/                      # paper-ready figures (PNG)
+videos/                       # demo videos (mp4) and the README GIF
 results/                      # curated evidence artifacts (JSON/CSV/MD + selected frames)
 run_b3_remaining_seeds.sh     # batch reference for the seed sweep
 ```
@@ -119,7 +156,7 @@ The AI2-THOR experiments use a dedicated conda environment.
 ```bash
 conda create -n memoryguard-ai2thor python=3.11 -y
 conda activate memoryguard-ai2thor
-pip install ai2thor grounded-sam2   # plus the project requirements for CPU-only runs
+pip install -r requirements.txt     # plus Grounding DINO and SAM 2 from their upstream repositories
 
 # unit tests
 python -m unittest discover -s tests
@@ -128,8 +165,27 @@ python -m unittest discover -s tests
 conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop \
     --out-dir results/ai2thor_live_gsam_closed_loop
 
-# CPU-only analyses of recorded rows
-python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop_compare --help
+# paired passive-vs-active challenge: screen, run both arms, analyze
+conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_paired_hard_challenge_screen \
+    --scene-targets FloorPlan2:Egg FloorPlan5:Bread --seeds 101 103 107 --k 4 \
+    --freeze-mode round_robin --probe-mode rich --out-dir results/screen
+
+conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop \
+    --scenes FloorPlan2 FloorPlan5 --seeds 101 103 107 \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json \
+    --verification-budget 4 --revisit-mode stepwise --execute-task-bridge \
+    --honest-interaction --max-alternate-poses 3 --rich-before-probe --out-dir results/active
+
+conda run -n memoryguard-ai2thor python -m embodied_memory_pilot.ai2thor_paired_task_bridge_control \
+    results/active/live_gsam_closed_loop.json --live-passive --honest-interaction --out-dir results/paired
+
+python scripts/analyze_paired_hard_challenge.py --active results/active/live_gsam_closed_loop.json \
+    --paired results/paired/paired_task_bridge_control.json \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json --out-dir results/analysis
+
+# render a demo video for a recorded case
+python scripts/make_demo_video.py --row-source results/active/live_gsam_closed_loop.json \
+    --case FloorPlan2:Potato:101 --mode active --out-dir videos
 ```
 
 ## Scope and limitations

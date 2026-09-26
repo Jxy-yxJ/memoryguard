@@ -253,7 +253,7 @@ class GroundedSAM2LocationVerifierTest(unittest.TestCase):
             grounding_config=Path("missing_config.py"),
             grounding_checkpoint=Path("missing_checkpoint.pth"),
             sam2_config=Path(
-                "/home/jxy/.cache/memoryguard-grounded-sam2-src-unpacked2/sam2-main/sam2/configs/sam2.1/sam2.1_hiera_t.yaml"
+                "/home/jxy/.cache/aris-grounded-sam2-src-unpacked2/sam2-main/sam2/configs/sam2.1/sam2.1_hiera_t.yaml"
             ),
         )
 
@@ -580,6 +580,11 @@ class TestYoloWorldSmoke(unittest.TestCase):
         self.assertEqual(smoke['case_list_case_count'], 1)
         self.assertEqual(smoke['claim_boundary'], 'YOLO-World blocked dependency artifact over the existing saved Book/Newspaper case-list protocol only; no detector superiority, recall, precision, broad benchmark, live AI2-THOR, navigation, manipulation, ObjectNav, recovery-search, memory-writeback, or policy-performance claim is supported.')
 
+_DETECTOR_AUDIT_DIR = Path("results/ai2thor_live_gsam_targeted_reproduction_post_05822d3")
+_DETECTOR_SKIP_REASON = "local detector-audit artifacts are not included in the repository"
+
+
+@unittest.skipUnless(_DETECTOR_AUDIT_DIR.exists(), _DETECTOR_SKIP_REASON)
 class TestDetectorBaselineAudit(unittest.TestCase):
     def test_make_detector_baseline_audit_reports_missing_owl_vit_and_yolo_world(self) -> None:
         from embodied_memory_pilot.ai2thor_grounded_sam2_verifier import make_detector_baseline_audit

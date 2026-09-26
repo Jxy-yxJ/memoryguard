@@ -22,6 +22,7 @@ from typing import Any, cast
 
 from embodied_memory_pilot.ai2thor_adapter import (
     DEFAULT_PROBE_ACTIONS,
+    RICH_BEFORE_PROBE_ACTIONS,
     CapabilityReport,
     ai2thor_capability,
 )
@@ -70,6 +71,8 @@ class ScreeningConfig:
     d_passive_min: float = DEFAULT_D_PASSIVE_MIN_M
     d_active_max: float = DEFAULT_D_ACTIVE_MAX_M
     k: int = DEFAULT_K
+    freeze_mode: str = "first"
+    probe_mode: str = "default"
     width: int = 300
     height: int = 300
     platform_name: str = "CloudRendering"
@@ -121,9 +124,10 @@ def screen_scene_seed(
 ) -> list[Json]:
     reach_event = controller.step("GetReachablePositions")
     reachable = _reachable_positions(cast(Sequence[object], _metadata(reach_event).get("actionReturn", [])))
+    before_actions = RICH_BEFORE_PROBE_ACTIONS if config.probe_mode == "rich" else DEFAULT_PROBE_ACTIONS
     before_objects = _collect_memory(
         controller,
-        DEFAULT_PROBE_ACTIONS,
+        before_actions,
         capture_images=False,
         scene_name=scene,
         phase="before",
@@ -200,25 +204,55 @@ def screen_scene_seed(
     return rows
 
 
-def freeze_case_list(rows: Sequence[Mapping[str, object]], k: int) -> list[Json]:
+def _frozen_entry(row: Mapping[str, object], idx: int) -> Json:
+    return {
+        "row_idx": idx,
+        "case_id": row.get("candidate_id"),
+        "scene": row.get("scene"),
+        "seed": row.get("seed"),
+        "target": row.get("target"),
+        "role": "paired_hard_challenge_frozen",
+        "expected_risk": "geometry_discriminative_pre_registered",
+        "d_passive": row.get("d_passive"),
+        "d_active": row.get("d_active"),
+    }
+
+
+def _sorted_qualifying(rows: Sequence[Mapping[str, object]]) -> list[Json]:
     qualifying = [dict(row) for row in rows if row.get("qualifies") is True]
     qualifying.sort(key=lambda row: (str(row.get("scene")), str(row.get("target")), int(cast(int, row.get("seed", 0)))))
+    return qualifying
+
+
+def freeze_case_list(rows: Sequence[Mapping[str, object]], k: int) -> list[Json]:
+    return [_frozen_entry(row, idx) for idx, row in enumerate(_sorted_qualifying(rows)[:k])]
+
+
+def freeze_case_list_round_robin(rows: Sequence[Mapping[str, object]], k: int) -> list[Json]:
+    """Freeze up to k qualifying cases by round-robin across scene-target combinations.
+
+    Deterministic and outcome-free: combos are visited in sorted (scene, target) order, and each
+    pass takes the smallest unselected qualifying seed of every combo until k cases are frozen.
+    """
+    by_combo: dict[tuple[str, str], list[Json]] = {}
+    for row in _sorted_qualifying(rows):
+        by_combo.setdefault((str(row.get("scene")), str(row.get("target"))), []).append(row)
+    combo_order = sorted(by_combo)
+    cursor = {combo: 0 for combo in combo_order}
     frozen: list[Json] = []
-    for idx, row in enumerate(qualifying[:k]):
-        frozen.append(
-            {
-                "row_idx": idx,
-                "case_id": row.get("candidate_id"),
-                "scene": row.get("scene"),
-                "seed": row.get("seed"),
-                "target": row.get("target"),
-                "role": "paired_hard_challenge_frozen",
-                "expected_risk": "geometry_discriminative_pre_registered",
-                "d_passive": row.get("d_passive"),
-                "d_active": row.get("d_active"),
-            }
-        )
-    return frozen
+    while len(frozen) < k:
+        progressed = False
+        for combo in combo_order:
+            index = cursor[combo]
+            if index < len(by_combo[combo]):
+                frozen.append(by_combo[combo][index])
+                cursor[combo] = index + 1
+                progressed = True
+                if len(frozen) >= k:
+                    break
+        if not progressed:
+            break
+    return [_frozen_entry(row, idx) for idx, row in enumerate(frozen)]
 
 
 def blocked_screening_result(capability: CapabilityReport, config: ScreeningConfig) -> Json:
@@ -283,7 +317,10 @@ def run_screening(
                 if controller is not None:
                     controller.stop()
 
-    frozen = freeze_case_list(candidate_rows, config.k)
+    if config.freeze_mode == "round_robin":
+        frozen = freeze_case_list_round_robin(candidate_rows, config.k)
+    else:
+        frozen = freeze_case_list(candidate_rows, config.k)
     status_counts: dict[str, int] = {}
     for row in candidate_rows:
         key = str(row.get("status"))
@@ -295,6 +332,7 @@ def run_screening(
         "qualifying": qualifying_count,
         "frozen_cases": len(frozen),
         "shortfall": len(frozen) < config.k,
+        "freeze_mode": config.freeze_mode,
         "status_counts": status_counts,
         "controller_started": True,
     }
@@ -358,19 +396,34 @@ def parse_args(argv: Sequence[str] | None = None) -> ScreeningConfig:
         description="Screen the pre-registered discriminative paired passive-vs-active challenge universe"
     )
     parser.add_argument("--seeds", nargs="+", type=int, default=list(DEFAULT_SEEDS))
+    parser.add_argument("--scene-targets", nargs="+", default=None, help="Universe as Scene:Target pairs (defaults to the original universe)")
     parser.add_argument("--d-passive-min", type=float, default=DEFAULT_D_PASSIVE_MIN_M)
     parser.add_argument("--d-active-max", type=float, default=DEFAULT_D_ACTIVE_MAX_M)
     parser.add_argument("--k", type=int, default=DEFAULT_K)
+    parser.add_argument("--freeze-mode", choices=["first", "round_robin"], default="first")
+    parser.add_argument("--probe-mode", choices=["default", "rich"], default="default")
     parser.add_argument("--width", type=int, default=300)
     parser.add_argument("--height", type=int, default=300)
     parser.add_argument("--platform", default="CloudRendering", dest="platform_name")
     parser.add_argument("--out-dir", type=Path, default=Path("results/0514_paired_hard_challenge_screen_v1"))
     ns = parser.parse_args(argv)
+    universe = DEFAULT_UNIVERSE
+    if ns.scene_targets:
+        parsed_pairs: list[tuple[str, str]] = []
+        for item in ns.scene_targets:
+            scene, _, target = str(item).partition(":")
+            if not scene or not target:
+                raise SystemExit(f"invalid --scene-targets item '{item}'; expected Scene:Target")
+            parsed_pairs.append((scene, target))
+        universe = tuple(parsed_pairs)
     return ScreeningConfig(
+        universe=universe,
         seeds=tuple(int(seed) for seed in ns.seeds),
         d_passive_min=float(ns.d_passive_min),
         d_active_max=float(ns.d_active_max),
         k=int(ns.k),
+        freeze_mode=str(ns.freeze_mode),
+        probe_mode=str(ns.probe_mode),
         width=int(ns.width),
         height=int(ns.height),
         platform_name=str(ns.platform_name),

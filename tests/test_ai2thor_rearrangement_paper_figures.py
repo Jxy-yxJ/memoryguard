@@ -13,6 +13,10 @@ from embodied_memory_pilot.ai2thor_rearrangement_paper_figures import (
 )
 
 
+_PAPER_FIGURE_PROBES = Path("results/ai2thor_rearrangement_6scene_seed7/ai2thor_rearrangement_probe.json")
+_SKIP_REASON = "local rearrangement probe artifacts are not included in the repository"
+
+
 class AI2ThorRearrangementPaperFiguresTest(unittest.TestCase):
     def test_load_ablation_summary_converts_numeric_fields(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -47,6 +51,7 @@ class AI2ThorRearrangementPaperFiguresTest(unittest.TestCase):
 
         self.assertEqual([row["ablation"] for row in selected], ["salience_no_verification", "verify_threshold_0p2"])
 
+    @unittest.skipUnless(_PAPER_FIGURE_PROBES.exists(), _SKIP_REASON)
     def test_extract_stale_case_finds_thresholded_verification_catch(self) -> None:
         case = extract_stale_case(
             [
@@ -85,6 +90,7 @@ class AI2ThorRearrangementPaperFiguresTest(unittest.TestCase):
         self.assertIn("z=-01.58", label)
         self.assertTrue(all(len(line) <= 24 for line in lines), label)
 
+    @unittest.skipUnless(_PAPER_FIGURE_PROBES.exists(), _SKIP_REASON)
     def test_generate_paper_figures_creates_outputs(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

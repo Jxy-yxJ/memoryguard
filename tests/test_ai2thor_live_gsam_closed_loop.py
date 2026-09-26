@@ -9,12 +9,13 @@ from typing import cast
 
 import numpy as np
 
-from embodied_memory_pilot.ai2thor_adapter import CapabilityReport
+from embodied_memory_pilot.ai2thor_adapter import RICH_BEFORE_PROBE_ACTIONS, CapabilityReport
 from embodied_memory_pilot.ai2thor_grounded_sam2_verifier import LocationDecision
 from embodied_memory_pilot.ai2thor_live_gsam_closed_loop import (
     LIVE_PASSIVE_TASK_BRIDGE_BOUNDARY,
     LiveGSAMClosedLoopConfig,
     StaleUncertaintyInputs,
+    _alternate_reachable_poses,
     _apply_calibrated_ev_penalty,
     _attempt_pickup_honest,
     _load_targeted_case_specs,
@@ -27,6 +28,7 @@ from embodied_memory_pilot.ai2thor_live_gsam_closed_loop import (
     _select_memory_targets,
     _visual_instance_confusion_prior,
     _rank_verification_candidates,
+    parse_args,
     run_live_gsam_closed_loop,
     write_outputs,
 )
@@ -1884,6 +1886,27 @@ class HonestInteractionTest(unittest.TestCase):
         self.assertEqual(fields["interaction_attempt_mode"], "forced_action")
         self.assertEqual(controller.pickup_calls[-1].get("forceAction"), True)
 
+    def test_facing_uses_ai2thor_yaw_convention(self) -> None:
+        forward_controller = FakeHonestInteractionController(object_position=(0.0, 1.10, 1.0))
+        forward_controller.spawned = True
+        fields, _success, _failure = _attempt_pickup_honest(
+            forward_controller,
+            object_id="Apple|honest",
+            target_position={"x": 0.0, "y": 1.10, "z": 1.0},
+            action="PickupObject",
+        )
+        self.assertEqual(fields["interaction_rotation_actions"], 0)
+
+        right_controller = FakeHonestInteractionController(object_position=(1.0, 1.10, 0.0))
+        right_controller.spawned = True
+        fields, _success, _failure = _attempt_pickup_honest(
+            right_controller,
+            object_id="Apple|honest",
+            target_position={"x": 1.0, "y": 1.10, "z": 0.0},
+            action="PickupObject",
+        )
+        self.assertEqual(fields["interaction_rotation_actions"], 1)
+
     def test_honest_pickup_sweeps_horizon_until_visible(self) -> None:
         controller = FakeHonestInteractionController(object_position=(0.0, 1.10, 0.25), visible_from_horizon=30.0)
         controller.spawned = True
@@ -1935,6 +1958,30 @@ class HonestInteractionTest(unittest.TestCase):
         self.assertEqual(fields["interaction_attempt_mode"], "honest_face_then_pick")
         self.assertEqual(fields["interaction_used_force_action"], False)
         self.assertEqual(controller.pickup_calls[-1].get("forceAction"), False)
+
+
+class RichBeforeProbeTest(unittest.TestCase):
+    def test_parse_args_enables_rich_before_probe(self) -> None:
+        config = parse_args(["--rich-before-probe"])
+        self.assertEqual(config.before_probe_actions, RICH_BEFORE_PROBE_ACTIONS)
+
+    def test_parse_args_defaults_to_standard_before_probe(self) -> None:
+        config = parse_args([])
+        self.assertIsNone(config.before_probe_actions)
+
+    def test_parse_args_max_alternate_poses(self) -> None:
+        config = parse_args(["--max-alternate-poses", "2"])
+        self.assertEqual(config.max_alternate_poses, 2)
+
+    def test_alternate_reachable_poses_orders_excludes_and_caps(self) -> None:
+        target = {"x": 0.0, "y": 0.9, "z": 0.0}
+        reachable = [
+            {"x": 0.0, "y": 0.9, "z": 3.0},
+            {"x": 0.0, "y": 0.9, "z": 0.5},
+            {"x": 0.0, "y": 0.9, "z": 1.0},
+        ]
+        alternates = _alternate_reachable_poses(target, reachable, 2, {"x": 0.0, "y": 0.9, "z": 0.5})
+        self.assertEqual([pose["z"] for pose in alternates], [1.0, 3.0])
 
 
 class SessionResilienceTest(unittest.TestCase):

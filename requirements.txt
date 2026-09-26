@@ -1,0 +1,13 @@
+# Core simulation and data handling
+ai2thor==4.2.0
+numpy
+pillow
+matplotlib
+opencv-python
+
+# Verifier stack (Grounding DINO + SAM 2 are installed from their upstream repositories)
+torch>=2.0
+torchvision
+transformers==4.38.2
+tokenizers==0.15.2
+huggingface-hub==0.36.2

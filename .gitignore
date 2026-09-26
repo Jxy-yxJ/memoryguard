@@ -11,3 +11,6 @@ checkpoints/
 .vscode/
 .idea/
 .DS_Store
+
+# Test-generated smoke outputs
+results/ai2thor_live_maintenance_smoke/

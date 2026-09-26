@@ -11,6 +11,8 @@ from embodied_memory_pilot.ai2thor_paired_hard_challenge_screen import (
     SCREENING_SCHEMA_VERSION,
     ScreeningConfig,
     freeze_case_list,
+    freeze_case_list_round_robin,
+    parse_args,
     run_screening,
     screen_scene_seed,
     write_outputs,
@@ -136,6 +138,26 @@ class ScreenSceneSeedTest(unittest.TestCase):
         rows = screen_scene_seed(controller, scene="FloorPlan1", seed=7, target_types=("Apple",), config=_config())
         self.assertEqual(rows[0]["status"], "not_spawned")
 
+    def test_rich_probe_mode_issues_horizon_sweep_actions(self) -> None:
+        controller = FakeScreenController(
+            before_objects=[_obj("Apple", "Apple|0", (0.5, 1.1, 0.5))],
+            after_objects=[_obj("Apple", "Apple|0", (5.0, 1.1, 5.0))],
+            reachable=[{"x": 0.45, "y": 0.9, "z": 0.45}, {"x": 5.05, "y": 0.9, "z": 5.05}],
+        )
+        rows = screen_scene_seed(
+            controller,
+            scene="FloorPlan1",
+            seed=7,
+            target_types=("Apple",),
+            config=_config(probe_mode="rich"),
+        )
+        self.assertEqual(len(rows), 1)
+        self.assertIn("LookDown", controller.actions)
+
+    def test_parse_args_supports_probe_mode(self) -> None:
+        config = parse_args(["--probe-mode", "rich"])
+        self.assertEqual(config.probe_mode, "rich")
+
     def test_not_pickupable_is_excluded(self) -> None:
         controller = FakeScreenController(
             before_objects=[_obj("Apple", "Apple|0", (0.5, 1.1, 0.5))],
@@ -173,6 +195,45 @@ class FreezeCaseListTest(unittest.TestCase):
         rows = [self._row("FloorPlan1", "Apple", 7, True), self._row("FloorPlan1", "Apple", 11, False)]
         frozen = freeze_case_list(rows, 8)
         self.assertEqual(len(frozen), 1)
+
+    def test_round_robin_spreads_across_scene_target_combinations(self) -> None:
+        rows = [
+            self._row("FloorPlan2", "Egg", 101, True),
+            self._row("FloorPlan2", "Egg", 103, True),
+            self._row("FloorPlan2", "Egg", 107, True),
+            self._row("FloorPlan5", "Bread", 101, True),
+            self._row("FloorPlan5", "Bread", 103, True),
+        ]
+        frozen = freeze_case_list_round_robin(rows, 4)
+        self.assertEqual(
+            [row["case_id"] for row in frozen],
+            ["FloorPlan2|Egg|101", "FloorPlan5|Bread|101", "FloorPlan2|Egg|103", "FloorPlan5|Bread|103"],
+        )
+        self.assertEqual([row["row_idx"] for row in frozen], [0, 1, 2, 3])
+
+    def test_parse_args_supports_custom_universe_and_freeze_mode(self) -> None:
+        config = parse_args(
+            [
+                "--scene-targets",
+                "FloorPlan2:Egg",
+                "FloorPlan5:Bread",
+                "--seeds",
+                "101",
+                "103",
+                "--freeze-mode",
+                "round_robin",
+                "--k",
+                "2",
+            ]
+        )
+        self.assertEqual(config.universe, (("FloorPlan2", "Egg"), ("FloorPlan5", "Bread")))
+        self.assertEqual(config.seeds, (101, 103))
+        self.assertEqual(config.freeze_mode, "round_robin")
+        self.assertEqual(config.k, 2)
+
+    def test_parse_args_rejects_malformed_scene_target(self) -> None:
+        with self.assertRaises(SystemExit):
+            parse_args(["--scene-targets", "FloorPlan2Egg"])
 
 
 class RunScreeningTest(unittest.TestCase):

@@ -12,6 +12,7 @@ import argparse
 import json
 import math
 from collections import Counter
+from datetime import date as _date
 from pathlib import Path
 from typing import Any, Mapping, Sequence, cast
 
@@ -33,6 +34,40 @@ def _mcnemar_exact_two_sided(active_only: int, passive_only: int) -> float:
     k = min(active_only, passive_only)
     tail = sum(math.comb(n, i) for i in range(0, k + 1)) / (2 ** n)
     return min(1.0, 2.0 * tail)
+
+
+def _binomial_cdf(k: int, n: int, p: float) -> float:
+    return sum(math.comb(n, i) * (p ** i) * ((1.0 - p) ** (n - i)) for i in range(0, k + 1))
+
+
+def clopper_pearson(k: int, n: int, alpha: float = 0.05) -> tuple[float, float]:
+    """Exact Clopper-Pearson confidence interval for a binomial proportion."""
+    if n <= 0:
+        return (0.0, 1.0)
+    k = max(0, min(k, n))
+    if k == 0:
+        lower = 0.0
+    else:
+        lo, hi = 0.0, 1.0
+        for _ in range(80):
+            mid = (lo + hi) / 2.0
+            if 1.0 - _binomial_cdf(k - 1, n, mid) > alpha / 2.0:
+                hi = mid
+            else:
+                lo = mid
+        lower = (lo + hi) / 2.0
+    if k == n:
+        upper = 1.0
+    else:
+        lo, hi = 0.0, 1.0
+        for _ in range(80):
+            mid = (lo + hi) / 2.0
+            if _binomial_cdf(k, n, mid) > alpha / 2.0:
+                lo = mid
+            else:
+                hi = mid
+        upper = (lo + hi) / 2.0
+    return (round(lower, 4), round(upper, 4))
 
 
 def analyze(active_path: Path, paired_path: Path, case_list_path: Path) -> Json:
@@ -112,19 +147,21 @@ def analyze(active_path: Path, paired_path: Path, case_list_path: Path) -> Json:
 
     return {
         "schema": "0514_paired_hard_challenge_result_to_claim.v1",
-        "date": "2026-09-19",
+        "date": _date.today().isoformat(),
         "source_active_artifact": str(active_path),
         "source_paired_artifact": str(paired_path),
         "source_case_list": str(case_list_path),
-        "freeze_provenance": {
-            "original_screen_frozen_cases": 8,
-            "effective_frozen_cases": len(case_list.get("cases", [])),
-            "amendment_record": str(amendment_path),
-            "pre_outcome_amendment_validated": bool(
-                amendment and amendment.get("pre_outcome_amendment_validated") is True
-            ),
-            "effective_case_list_sha256": amendment.get("effective_case_list_sha256") if amendment else None,
-        },
+        "freeze_provenance": (
+            {
+                "original_screen_frozen_cases": 8,
+                "effective_frozen_cases": len(case_list.get("cases", [])),
+                "amendment_record": str(amendment_path),
+                "pre_outcome_amendment_validated": bool(amendment.get("pre_outcome_amendment_validated") is True),
+                "effective_case_list_sha256": amendment.get("effective_case_list_sha256"),
+            }
+            if amendment is not None
+            else None
+        ),
         "frozen_cases": len(case_list.get("cases", [])),
         "paired_cases": len(pairs),
         "decision_rule": {
@@ -142,6 +179,9 @@ def analyze(active_path: Path, paired_path: Path, case_list_path: Path) -> Json:
             "active_only_success": active_only,
             "passive_only_success": passive_only,
             "mcnemar_exact_two_sided_p": f"{_mcnemar_exact_two_sided(active_only, passive_only):.3e}",
+            "active_success_ci95_evaluable": clopper_pearson(active_success_count, n_evaluable),
+            "active_success_ci95_conservative_all_rows": clopper_pearson(active_success_count, len(pairs)),
+            "passive_success_ci95_all_rows": clopper_pearson(passive_success_count, len(pairs)),
             "active_not_evaluated": len(active_not_evaluated),
             "active_not_evaluated_cases": [p["case_id"] for p in active_not_evaluated],
             "decision": decision,
@@ -177,6 +217,8 @@ def render_markdown(result: Json) -> str:
         f"- Both success: {s['both_success']} | Both fail: {s['both_fail']}",
         f"- Active-only success: {s['active_only_success']} | Passive-only success: {s['passive_only_success']}",
         f"- McNemar exact two-sided p: {s['mcnemar_exact_two_sided_p']}",
+        f"- 95% CI (Clopper-Pearson): active {s['active_success_ci95_evaluable']} evaluable, "
+        f"{s['active_success_ci95_conservative_all_rows']} over all frozen rows; passive {s['passive_success_ci95_all_rows']}",
         f"- Active arm not evaluated (detector false negatives): {s['active_not_evaluated']} {s['active_not_evaluated_cases']}",
         "",
         f"## Pre-registered decision: **{s['decision']}**",

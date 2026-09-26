@@ -13,6 +13,7 @@ from typing import Any, Protocol, cast
 from embodied_memory_pilot.ai2thor_adapter import (
     DEFAULT_OBJECTS,
     DEFAULT_PROBE_ACTIONS,
+    RICH_BEFORE_PROBE_ACTIONS,
     CapabilityReport,
     ai2thor_capability,
     configure_build_mirror,
@@ -113,6 +114,8 @@ class LiveGSAMClosedLoopConfig:
     revisit_mode: str = "teleportfull"
     execute_task_bridge: bool = False
     honest_interaction: bool = False
+    before_probe_actions: tuple[str, ...] | None = None
+    max_alternate_poses: int = 0
 
 
 @dataclass(frozen=True)
@@ -604,6 +607,7 @@ def _default_task_execution_fields() -> Json:
         "interaction_target_visible": None,
         "interaction_horizon_deg": None,
         "interaction_visibility_sweep_used": None,
+        "task_bridge_alternate_poses_tried": 0,
     }
 
 
@@ -707,6 +711,24 @@ def _stepwise_revisit_to_position(
     return current, actions, path_steps, False, failure_reason
 
 
+def _alternate_reachable_poses(
+    target_position: Mapping[str, float],
+    reachable: Sequence[Mapping[str, float]],
+    k: int,
+    exclude_position: Mapping[str, float] | None,
+) -> list[dict[str, float]]:
+    """Deterministic list of up to k reachable poses nearest to target_position, skipping exclude_position."""
+    ordered = sorted(reachable, key=lambda pose: _ground_distance(target_position, pose))
+    alternates: list[dict[str, float]] = []
+    for pose in ordered:
+        if exclude_position is not None and _ground_distance(pose, exclude_position) <= 1e-6:
+            continue
+        alternates.append({key: float(cast(float, pose.get(key, 0.0))) for key in ("x", "y", "z")})
+        if len(alternates) >= k:
+            break
+    return alternates
+
+
 def _attempt_pickup_honest(
     controller: ControllerLike,
     *,
@@ -743,10 +765,9 @@ def _attempt_pickup_honest(
     agent_pos = agent_map.get("position")
     rotation = agent_map.get("rotation")
     if isinstance(agent_pos, Mapping) and isinstance(rotation, Mapping):
-        desired_yaw, _horizon = _look_at_angles(
-            {key: float(cast(float, agent_pos.get(key, 0.0))) for key in ("x", "y", "z")},
-            target_pos,
-        )
+        agent_x = float(cast(float, agent_pos.get("x", 0.0)))
+        agent_z = float(cast(float, agent_pos.get("z", 0.0)))
+        desired_yaw = math.degrees(math.atan2(target_pos["x"] - agent_x, target_pos["z"] - agent_z)) % 360.0
         diff = (desired_yaw - float(rotation.get("y", 0.0)) + 180.0) % 360.0 - 180.0
         steps = min(max_rotations, int(round(abs(diff) / 90.0)))
         for _ in range(steps):
@@ -770,7 +791,18 @@ def _attempt_pickup_honest(
 
     if target_obj is not None and not bool(target_obj.get("visible")):
         fields["interaction_visibility_sweep_used"] = True
-        for look_action, degrees in (("LookDown", 15.0), ("LookDown", 15.0), ("LookDown", 15.0), ("LookDown", 15.0), ("LookUp", 15.0), ("LookUp", 15.0)):
+        for look_action, degrees in (
+            ("LookDown", 15.0),
+            ("LookDown", 15.0),
+            ("LookDown", 15.0),
+            ("LookDown", 15.0),
+            ("LookUp", 15.0),
+            ("LookUp", 15.0),
+            ("LookUp", 15.0),
+            ("LookUp", 15.0),
+            ("LookUp", 15.0),
+            ("LookUp", 15.0),
+        ):
             controller.step(look_action, degrees=degrees)
             probe = _metadata(controller.step("Pass"))
             probe_obj, visible = _target_visible(probe)
@@ -916,6 +948,45 @@ def _execute_task_bridge_for_row(
                 boundary=STEPWISE_TASK_BRIDGE_BOUNDARY if config.revisit_mode == "stepwise" else TASK_BRIDGE_BOUNDARY,
             )
         )
+        if (
+            config.honest_interaction
+            and config.max_alternate_poses > 0
+            and config.revisit_mode == "stepwise"
+            and fields.get("downstream_task_success") is not True
+            and position is not None
+            and reachable
+        ):
+            first_goal = nearest_revisit_position(cast(dict[str, float], position), reachable)
+            alternates = _alternate_reachable_poses(
+                cast(Mapping[str, float], position), reachable, config.max_alternate_poses, first_goal
+            )
+            attempted_alternates = 0
+            for candidate in alternates:
+                attempted_alternates += 1
+                current_agent = _nav_agent_position(_metadata(controller.step("Pass")))
+                waypoints = _reachable_waypoint_route(current_agent, candidate, reachable)
+                _, extra_actions, extra_steps, alt_reached, _alt_reason = _stepwise_revisit_to_position(
+                    controller,
+                    start_position=current_agent,
+                    target_position=candidate,
+                    waypoints=waypoints,
+                )
+                fields["task_bridge_path_steps"] = int(fields.get("task_bridge_path_steps") or 0) + extra_steps
+                fields["task_bridge_navigation_actions"] = list(fields.get("task_bridge_navigation_actions") or []) + list(extra_actions)
+                if not alt_reached:
+                    continue
+                retry_fields = _execute_pickup_attempt(
+                    controller,
+                    action=action,
+                    object_id=object_id,
+                    target_position=position,
+                    honest_interaction=True,
+                    boundary=STEPWISE_TASK_BRIDGE_BOUNDARY,
+                )
+                fields.update(retry_fields)
+                if retry_fields.get("downstream_task_success") is True:
+                    break
+            fields["task_bridge_alternate_poses_tried"] = attempted_alternates
     except Exception as exc:  # pragma: no cover - defensive boundary for optional simulator failures
         fields["task_execution_evaluated"] = True
         fields["execute_action"] = action
@@ -1112,7 +1183,7 @@ def run_live_gsam_closed_loop(
                 reachable = _reachable_positions(cast(Sequence[object], _metadata(reach_event).get("actionReturn", [])))
                 before_objects = _collect_memory(
                     controller,
-                    DEFAULT_PROBE_ACTIONS,
+                    config.before_probe_actions or DEFAULT_PROBE_ACTIONS,
                     capture_images=True,
                     image_dir=image_dir,
                     scene_name=scene,
@@ -1514,6 +1585,8 @@ def parse_args(argv: Sequence[str] | None = None) -> LiveGSAMClosedLoopConfig:
                         help="Revisit mechanism: default TeleportFull shortcut or opt-in bounded stepwise navigation instrumentation")
     parser.add_argument("--execute-task-bridge", action="store_true", help="Opt-in Wave 4 bridge: execute one PickupObject/OpenObject attempt after verified memory update")
     parser.add_argument("--honest-interaction", action="store_true", help="Use forceAction=False with a deterministic face-then-pick step so simulator proximity/visibility preconditions apply")
+    parser.add_argument("--rich-before-probe", action="store_true", help="Collect the before-state memory with a horizon-sweep probe (LookDown passes) instead of the default five-action sweep")
+    parser.add_argument("--max-alternate-poses", type=int, default=0, help="Bounded approach-pose fallback: after a failed honest pickup, try up to N further reachable poses nearest to the refreshed location")
     ns = parser.parse_args(argv)
     return LiveGSAMClosedLoopConfig(
         scenes=tuple(str(s) for s in ns.scenes),
@@ -1544,6 +1617,8 @@ def parse_args(argv: Sequence[str] | None = None) -> LiveGSAMClosedLoopConfig:
         revisit_mode=str(ns.revisit_mode),
         execute_task_bridge=bool(ns.execute_task_bridge),
         honest_interaction=bool(ns.honest_interaction),
+        before_probe_actions=RICH_BEFORE_PROBE_ACTIONS if bool(ns.rich_before_probe) else None,
+        max_alternate_poses=int(ns.max_alternate_poses),
     )
 
 
