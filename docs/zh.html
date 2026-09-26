@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MemoryGuard — 面向长程具身智能体的有界主动记忆维护</title>
+<meta name="description" content="MemoryGuard 在环境变化后检测陈旧的物体位置记忆，用感知核验、刷新记忆并继续执行任务——预注册挑战 29/32 对 0/34，并在未见场景/目标/种子上完成复现。">
+<meta property="og:title" content="MemoryGuard — 有界主动记忆维护">
+<meta property="og:description" content="具身智能体的 verify → update → act 记忆维护闭环。预注册配对实验 29/32 对 0/34；held-out 复现 22/24 对 0/24。">
+<meta property="og:image" content="assets/fig_0514_mixed_challenge.png">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --ink:#16181d; --muted:#5b6472; --line:#e6e9f0; --soft:#f6f8fc;
+    --accent:#3b5bdb; --accent-ink:#2b45c9; --ok:#177245; --bad:#b02a37;
+    --radius:14px; --max:1020px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;color:var(--ink);font-family:var(--font);line-height:1.75;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .container{max-width:var(--max);margin:0 auto;padding:0 22px}
+  code,pre{font-family:var(--mono)}
+  code{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:.1em .35em;font-size:.92em}
+  pre{background:#0f1420;color:#e8ecf6;border-radius:var(--radius);padding:16px 18px;overflow:auto;font-size:.88rem;line-height:1.55}
+  pre code{background:none;border:none;color:inherit;padding:0}
+  header.hero{background:linear-gradient(180deg,#f7f9ff 0%,#fff 100%);border-bottom:1px solid var(--line);padding:58px 0 40px}
+  .eyebrow{margin:0;color:var(--accent);font-weight:700;letter-spacing:.08em;font-size:.78rem}
+  h1{font-size:clamp(2.1rem,5vw,3rem);margin:.25em 0 .15em;letter-spacing:-.02em}
+  .tagline{font-size:1.12rem;color:var(--muted);margin:.2em 0 1.1em;max-width:46em}
+  .authors{margin:0 0 .9em;font-weight:600}
+  .authors span{color:var(--muted);font-weight:500}
+  .badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2em}
+  .badges img{height:20px;display:block}
+  .btns{display:flex;gap:.6rem;flex-wrap:wrap}
+  .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;padding:.62em 1.05em;border-radius:10px}
+  .btn:hover{background:var(--accent-ink);text-decoration:none}
+  .btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--soft)}
+  main{padding:8px 0 40px}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  h2{font-size:1.5rem;margin:0 0 .7em;letter-spacing:-.01em}
+  h3{font-size:1.02rem;margin:1.4em 0 .5em}
+  p{margin:.55em 0}
+  .lead{color:var(--muted)}
+  .demo-media{display:grid;gap:16px}
+  .demo-media img{width:100%;border:1px solid var(--line);border-radius:var(--radius);display:block}
+  video{width:100%;border:1px solid var(--line);border-radius:var(--radius);background:#000;display:block}
+  .caption{color:var(--muted);font-size:.92rem;margin-top:.5em}
+  .grid{display:grid;gap:14px}
+  .grid.four{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+  .card{border:1px solid var(--line);border-radius:var(--radius);padding:16px 17px;background:#fff}
+  .card h3{margin:.1em 0 .35em;font-size:.98rem}
+  .card p{margin:.2em 0 0;color:var(--muted);font-size:.93rem}
+  .step{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;background:var(--soft);border:1px solid var(--line);color:var(--accent);font-weight:700;font-size:.85rem;margin-right:.5em}
+  table{width:100%;border-collapse:collapse;font-size:.94rem;margin:.6em 0 .2em}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left}
+  th{background:var(--soft);font-weight:700}
+  td.num{white-space:nowrap}
+  .ok{color:var(--ok);font-weight:700}
+  .bad{color:var(--bad)}
+  figure{margin:1.2em 0 0}
+  figure img{width:100%;border:1px solid var(--line);border-radius:var(--radius)}
+  figcaption{color:var(--muted);font-size:.88rem;margin-top:.45em}
+  ul.clean{padding-left:1.15em;margin:.4em 0}
+  ul.clean li{margin:.28em 0}
+  .kpis{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:.4em 0 1em}
+  .kpi{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;background:var(--soft)}
+  .kpi b{display:block;font-size:1.45rem;letter-spacing:-.02em}
+  .kpi small{color:var(--muted)}
+  footer{padding:26px 0 46px;color:var(--muted);font-size:.9rem}
+  @media (max-width:640px){header.hero{padding-top:40px} section{padding:26px 0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <p class="eyebrow">具身智能 · 记忆可靠性</p>
+    <h1>MemoryGuard</h1>
+    <p class="tagline">面向长程具身智能体的有界主动记忆维护：在环境变化后检测陈旧的物体位置记忆，用感知核验、刷新存储状态，并在有界核验预算下继续执行下游任务。</p>
+    <p class="authors">江鑫宇（Xinyu Jiang） &nbsp;<span>·</span>&nbsp; <a href="https://github.com/Jxy-yxJ">GitHub</a> &nbsp;<span>·</span>&nbsp; <a href="https://github.com/Jxy-yxJ/MemoryGuard">代码仓库</a> &nbsp;<span>·</span>&nbsp; <a href="index.html">English</a></p>
+    <div class="badges">
+      <a href="https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml"><img src="https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml/badge.svg" alt="tests"></a>
+      <a href="https://github.com/Jxy-yxJ/MemoryGuard/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
+    </div>
+    <div class="btns">
+      <a class="btn" href="https://github.com/Jxy-yxJ/MemoryGuard">代码与证据</a>
+      <a class="btn ghost" href="#demo">观看演示</a>
+      <a class="btn ghost" href="index.html">English</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <section id="demo">
+    <h2>演示：被动失败 vs. 主动维护</h2>
+    <div class="demo-media">
+      <img src="assets/demo_comparison.gif" alt="并排对比：被动智能体在旧位置失败；MemoryGuard 核验、刷新并完成抓取。">
+    </div>
+    <p class="caption">左：被动智能体按陈旧记忆行动，到达记忆中的旧位置（红 X）却一无所获。右：MemoryGuard 先核验记忆、判定其陈旧、刷新位置，再导航到物体的真实新位置（绿圈）并完成抓取。视频由真实仿真帧渲染；右侧俯视图展示记忆旧位置、物体真实位置与智能体轨迹。</p>
+    <h3>完整分辨率运行</h3>
+    <video controls muted loop playsinline preload="metadata">
+      <source src="assets/FloorPlan1_Apple_7_comparison.mp4" type="video/mp4">
+    </video>
+    <p class="caption">同一案例（<code>FloorPlan1 / Apple / seed 7</code>）的被动 vs. 主动并排对比。另一段视频展示货架目标通过有界位姿回退被成功抓取：<a href="https://github.com/Jxy-yxJ/MemoryGuard/blob/main/videos/FloorPlan5_Knife_163_active.mp4">FloorPlan5 / Knife / seed 163</a>。</p>
+  </section>
+
+  <section id="problem">
+    <h2>问题</h2>
+    <p>长程智能体会存储物体记忆以避免反复搜索；但环境变化（物体被移动）后这些记忆会变陈旧，按陈旧记忆行动就会失败，而持续核验所有记忆又会浪费有限的感知与导航资源。本项目研究的具体问题是：</p>
+    <p class="lead"><b>在有限的感知与导航预算下，智能体应当主动核验并维护哪些记忆？</b></p>
+  </section>
+
+  <section id="method">
+    <h2>工作原理</h2>
+    <div class="grid four">
+      <div class="card">
+        <h3><span class="step">1</span>打分</h3>
+        <p>用廉价的预观测信号（重访可见性、与记忆位姿的距离、按类别的视觉混淆指标）计算"期望核验价值"并选出预算内 top-<i>B</i>。打分刻意简单、可审计；任何学习型 <i>P(stale)</i> 估计器都可替换。</p>
+      </div>
+      <div class="card">
+        <h3><span class="step">2</span>核验</h3>
+        <p>用逐步导航走到记忆位姿，对实时 RGB 帧运行开放词汇检测器（Grounding DINO + SAM 2），判定陈旧/新鲜并给出由检测结果支撑的候选位置。Oracle 元数据绝不作为策略输入。</p>
+      </div>
+      <div class="card">
+        <h3><span class="step">3</span>更新</h3>
+        <p>判定陈旧后，记忆记录由检测证据就地刷新，同时记录旧位置、新位置、置信度与更新来源——每次变更都可追溯。</p>
+      </div>
+      <div class="card">
+        <h3><span class="step">4</span>行动</h3>
+        <p>导航到刷新后的位置并以<i>诚实交互</i>执行下游动作：<code>forceAction=False</code>、修正偏航角的"面向-抓取"、相机俯仰扫描，以及邻近可达位姿的有界回退。</p>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:14px"><b>可审计性。</b>每一行记录都包含：是否使用核验器、陈旧判定、记忆是否被修改、重访/任务测量路径、<code>TeleportFull</code> 标志与失败原因。</p>
+  </section>
+
+  <section id="results">
+    <h2>结果</h2>
+    <div class="kpis">
+      <div class="kpi"><b>29/32 <small style="font-weight:600">（91%）</small></b><small>预注册挑战主动成功率（被动 0/34），McNemar 精确 p = 3.7e-09</small></div>
+      <div class="kpi"><b>22/24 <small style="font-weight:600">（92%）</small></b><small>未见场景/目标/种子的 held-out v2（被动 0/24），p = 4.8e-07</small></div>
+      <div class="kpi"><b>11/11</b><small>未见场景/目标/种子的 held-out pilot（被动 0/11），p = 9.8e-04</small></div>
+    </div>
+    <table>
+      <thead><tr><th>案例集</th><th>可评估配对</th><th>主动成功</th><th>被动成功</th><th>McNemar 精确 <i>p</i></th></tr></thead>
+      <tbody>
+        <tr><td>预注册挑战</td><td class="num">32</td><td class="ok">29/32（91%）</td><td class="bad">0/34</td><td class="num">3.7e-09</td></tr>
+        <tr><td>Held-out pilot（未见场景/目标/种子）</td><td class="num">11</td><td class="ok">11/11</td><td class="bad">0/11</td><td class="num">9.8e-04</td></tr>
+        <tr><td>Held-out v2（6 个未见场景、8 个未见组合）</td><td class="num">24</td><td class="ok">22/24（92%）</td><td class="bad">0/24</td><td class="num">4.8e-07</td></tr>
+      </tbody>
+    </table>
+    <p class="caption">主动分支 95% Clopper-Pearson 置信区间：预注册挑战 [0.75, 0.98]，held-out v2 [0.73, 0.99]。剩余主动失败为诚实的交互失败（目标被遮挡）与检测器假阴性，均如实报告而非剔除。</p>
+
+    <h3>支撑性发现</h3>
+    <ul class="clean">
+      <li><b>预算化排序</b>在易漏检协议上把被选中的严格检测假阴性从 <b>6 → 1</b>（预算 1–6）；组件消融表明收益来自视觉混淆先验（匹配反事实：current 6、density-only 6、visual-only 0、combined 0）。</li>
+      <li><b>检测不等于维护：</b>32B 视觉语言模型单轮可 6/6 检出陈旧，但只有 3/6 给出正确更新；多轮智能体完整链路 0/6。</li>
+      <li><b>核验器误差刻画：</b>全部分歧均为假阴性（8/8），集中在同类型实例混淆；定向复跑显示该现象对运行条件敏感而非确定性复现。</li>
+    </ul>
+
+    <figure>
+      <img src="assets/fig_0514_budget_curve.png" alt="预算曲线：不同核验预算下被选中的严格假阴性">
+      <figcaption>当前排序与校准排序在核验预算 1–6 下选中的严格检测假阴性。</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/fig_0514_component_ablation.png" alt="核验信号的组件消融">
+      <figcaption>组件消融：视觉混淆先验解释了大部分收益，空间密度在该匹配协议上没有贡献。</figcaption>
+    </figure>
+  </section>
+
+  <section id="protocol">
+    <h2>评测协议</h2>
+    <p>结论采用<b>配对</b>设计检验，而不是聚合成功率。案例先预注册，再经过与结果无关的几何筛选（陈旧位置与真实物体距离 ≥ 2 m、刷新位置 ≤ 1.5 m、目标可抓取、同类型配对无歧义）。随后主动与被动分支在<b>同一批冻结案例</b>上运行：相同场景/种子/初始摆放、相同逐步导航与诚实交互；被动分支只按陈旧位置行动，不使用核验器、不修改记忆。我们报告精确计数、McNemar 精确检验与 Clopper-Pearson 置信区间，并在未见场景、目标类别与种子上做复现。</p>
+  </section>
+
+  <section id="quickstart">
+    <h2>快速开始</h2>
+    <pre><code>git clone https://github.com/Jxy-yxJ/MemoryGuard.git
+cd MemoryGuard
+pip install -r requirements.txt          # AI2-THOR、numpy、pillow、matplotlib、opencv
+python -m unittest discover -s tests     # 275 项测试（纯 CPU 可跑）
+
+# 筛选案例宇宙 → 运行主动/被动双臂 → 配对统计
+python -m embodied_memory_pilot.ai2thor_paired_hard_challenge_screen \
+    --scene-targets FloorPlan2:Egg FloorPlan5:Bread --seeds 101 103 107 --k 4 \
+    --freeze-mode round_robin --probe-mode rich --out-dir results/screen
+
+python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop \
+    --scenes FloorPlan2 FloorPlan5 --seeds 101 103 107 \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json \
+    --verification-budget 4 --revisit-mode stepwise --execute-task-bridge \
+    --honest-interaction --max-alternate-poses 3 --rich-before-probe --out-dir results/active
+
+python -m embodied_memory_pilot.ai2thor_paired_task_bridge_control \
+    results/active/live_gsam_closed_loop.json --live-passive --honest-interaction --out-dir results/paired
+
+python scripts/analyze_paired_hard_challenge.py \
+    --active results/active/live_gsam_closed_loop.json \
+    --paired results/paired/paired_task_bridge_control.json \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json --out-dir results/analysis
+
+# 为已记录的案例渲染带字幕演示视频
+python scripts/make_demo_video.py --row-source results/active/live_gsam_closed_loop.json \
+    --case FloorPlan2:Potato:101 --mode active --out-dir videos</code></pre>
+  </section>
+
+  <section id="citation">
+    <h2>引用</h2>
+    <pre><code>@misc{jiang2026memoryguard,
+  title        = {MemoryGuard: Bounded Active Memory Maintenance for Long-Horizon Embodied Agents},
+  author       = {Jiang, Xinyu},
+  year         = {2026},
+  howpublished = {\url{https://github.com/Jxy-yxJ/MemoryGuard}},
+  note         = {Open-source research software}
+}</code></pre>
+  </section>
+
+  <section id="scope">
+    <h2>适用范围与局限</h2>
+    <ul class="clean">
+      <li>全部结果均为固定、预注册案例集上的 AI2-THOR 机制性证据。几何筛选决定了评测条件；被动基线在筛选案例上预期失败，因此配对检验证明的是<b>判别性，而非广泛有效性</b>。</li>
+      <li>Held-out 复现使用了已披露的、比原始协议更丰富的初始探测。</li>
+      <li>不对 ObjectNav/SPL、操作基准、持久化写回、跨平台迁移或真机性能作任何主张。</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    © 2026 江鑫宇（Xinyu Jiang） · <a href="https://github.com/Jxy-yxJ/MemoryGuard">MemoryGuard</a> · MIT License · 基于 <a href="https://ai2thor.allenai.org/">AI2-THOR</a>、<a href="https://github.com/IDEA-Research/GroundingDINO">Grounding DINO</a> 与 <a href="https://github.com/facebookresearch/sam2">SAM 2</a>。
+  </div>
+</footer>
+
+</body>
+</html>

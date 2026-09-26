@@ -7,7 +7,7 @@
 [![tests](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml/badge.svg)](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-*江鑫宇（[@Jxy-yxJ](https://github.com/Jxy-yxJ)）*
+*江鑫宇（[@Jxy-yxJ](https://github.com/Jxy-yxJ)） — [项目主页](https://jxy-yxj.github.io/MemoryGuard/zh.html) · [代码仓库](https://github.com/Jxy-yxJ/MemoryGuard)*
 
 
 MemoryGuard 研究长程具身记忆中的一个具体失效模式：环境变化后，记忆中某个物体的位置会悄悄变*陈旧*，

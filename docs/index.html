@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MemoryGuard — Bounded Active Memory Maintenance for Embodied Agents</title>
+<meta name="description" content="MemoryGuard detects stale object memories under environmental change, verifies them with perception, refreshes the stored state, and acts — 29/32 vs 0/34 on a pre-registered AI2-THOR challenge, replicated on unseen scenes, targets, and seeds.">
+<meta property="og:title" content="MemoryGuard — Bounded Active Memory Maintenance">
+<meta property="og:description" content="Verify → update → act for stale object memory in embodied agents. Pre-registered paired evaluation: 29/32 vs 0/34; held-out replication 22/24 vs 0/24.">
+<meta property="og:image" content="assets/fig_0514_mixed_challenge.png">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --ink:#16181d; --muted:#5b6472; --line:#e6e9f0; --soft:#f6f8fc;
+    --accent:#3b5bdb; --accent-ink:#2b45c9; --ok:#177245; --bad:#b02a37;
+    --radius:14px; --max:1020px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;color:var(--ink);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .container{max-width:var(--max);margin:0 auto;padding:0 22px}
+  code,pre{font-family:var(--mono)}
+  code{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:.1em .35em;font-size:.92em}
+  pre{background:#0f1420;color:#e8ecf6;border-radius:var(--radius);padding:16px 18px;overflow:auto;font-size:.88rem;line-height:1.55}
+  pre code{background:none;border:none;color:inherit;padding:0}
+  header.hero{background:linear-gradient(180deg,#f7f9ff 0%,#fff 100%);border-bottom:1px solid var(--line);padding:58px 0 40px}
+  .eyebrow{margin:0;color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+  h1{font-size:clamp(2.1rem,5vw,3rem);margin:.25em 0 .15em;letter-spacing:-.02em}
+  .tagline{font-size:1.12rem;color:var(--muted);margin:.2em 0 1.1em;max-width:46em}
+  .authors{margin:0 0 .9em;font-weight:600}
+  .authors span{color:var(--muted);font-weight:500}
+  .badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2em}
+  .badges img{height:20px;display:block}
+  .btns{display:flex;gap:.6rem;flex-wrap:wrap}
+  .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;padding:.62em 1.05em;border-radius:10px}
+  .btn:hover{background:var(--accent-ink);text-decoration:none}
+  .btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--soft)}
+  main{padding:8px 0 40px}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  h2{font-size:1.5rem;margin:0 0 .7em;letter-spacing:-.01em}
+  h3{font-size:1.02rem;margin:1.4em 0 .5em}
+  p{margin:.55em 0}
+  .lead{color:var(--muted)}
+  .demo-media{display:grid;gap:16px}
+  .demo-media img{width:100%;border:1px solid var(--line);border-radius:var(--radius);display:block}
+  video{width:100%;border:1px solid var(--line);border-radius:var(--radius);background:#000;display:block}
+  .caption{color:var(--muted);font-size:.92rem;margin-top:.5em}
+  .grid{display:grid;gap:14px}
+  .grid.four{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+  .card{border:1px solid var(--line);border-radius:var(--radius);padding:16px 17px;background:#fff}
+  .card h3{margin:.1em 0 .35em;font-size:.98rem}
+  .card p{margin:.2em 0 0;color:var(--muted);font-size:.93rem}
+  .step{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;background:var(--soft);border:1px solid var(--line);color:var(--accent);font-weight:700;font-size:.85rem;margin-right:.5em}
+  table{width:100%;border-collapse:collapse;font-size:.94rem;margin:.6em 0 .2em}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left}
+  th{background:var(--soft);font-weight:700}
+  td.num{white-space:nowrap}
+  .ok{color:var(--ok);font-weight:700}
+  .bad{color:var(--bad)}
+  figure{margin:1.2em 0 0}
+  figure img{width:100%;border:1px solid var(--line);border-radius:var(--radius)}
+  figcaption{color:var(--muted);font-size:.88rem;margin-top:.45em}
+  ul.clean{padding-left:1.15em;margin:.4em 0}
+  ul.clean li{margin:.28em 0}
+  .kpis{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:.4em 0 1em}
+  .kpi{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;background:var(--soft)}
+  .kpi b{display:block;font-size:1.45rem;letter-spacing:-.02em}
+  .kpi small{color:var(--muted)}
+  footer{padding:26px 0 46px;color:var(--muted);font-size:.9rem}
+  .lang{float:right;font-weight:600}
+  @media (max-width:640px){header.hero{padding-top:40px} section{padding:26px 0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <p class="eyebrow">Embodied AI · Memory Reliability</p>
+    <h1>MemoryGuard</h1>
+    <p class="tagline">Bounded active memory maintenance for long-horizon embodied agents: detect stale object memories under environmental change, verify them with perception, refresh the stored state, and act on the refreshed memory — under a bounded verification budget.</p>
+    <p class="authors">Xinyu Jiang &nbsp;<span>·</span>&nbsp; <a href="https://github.com/Jxy-yxJ">GitHub</a> &nbsp;<span>·</span>&nbsp; <a href="https://github.com/Jxy-yxJ/MemoryGuard">Code</a> &nbsp;<span>·</span>&nbsp; <a href="zh.html">中文</a></p>
+    <div class="badges">
+      <a href="https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml"><img src="https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml/badge.svg" alt="tests"></a>
+      <a href="https://github.com/Jxy-yxJ/MemoryGuard/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
+    </div>
+    <div class="btns">
+      <a class="btn" href="https://github.com/Jxy-yxJ/MemoryGuard">Code &amp; artifacts</a>
+      <a class="btn ghost" href="#demo">Watch the demo</a>
+      <a class="btn ghost" href="zh.html">简体中文</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <section id="demo">
+    <h2>Demo: passive failure vs. active maintenance</h2>
+    <div class="demo-media">
+      <img src="assets/demo_comparison.gif" alt="Side-by-side: passive agent fails at the stale location; MemoryGuard verifies, refreshes, and picks up the object.">
+    </div>
+    <p class="caption">Left: a passive agent acts on stale memory, arrives at the remembered location (red&nbsp;X), and finds nothing. Right: MemoryGuard verifies the memory, detects that it is stale, refreshes it, navigates to the object's new location (green&nbsp;circle), and picks it up. Rendered from real simulator frames; the top-down map shows the remembered location, the true object location, and the agent's path.</p>
+    <h3>Full-resolution runs</h3>
+    <video controls muted loop playsinline preload="metadata">
+      <source src="assets/FloorPlan1_Apple_7_comparison.mp4" type="video/mp4">
+    </video>
+    <p class="caption">Side-by-side passive vs. active on the same case (<code>FloorPlan1 / Apple / seed 7</code>). A second clip shows a shelf target solved by the bounded approach fallback: <a href="https://github.com/Jxy-yxJ/MemoryGuard/blob/main/videos/FloorPlan5_Knife_163_active.mp4">FloorPlan5 / Knife / seed 163</a>.</p>
+  </section>
+
+  <section id="problem">
+    <h2>The problem</h2>
+    <p>Long-horizon agents store object memories so they do not have to search repeatedly. Those memories go stale when objects move. Acting on stale memory fails, but continuously re-verifying everything is wasteful — sensing and navigation are the expensive resources. This project studies a concrete question:</p>
+    <p class="lead"><b>Under a limited sensing and navigation budget, which memories should an agent actively verify and maintain?</b></p>
+  </section>
+
+  <section id="method">
+    <h2>How it works</h2>
+    <div class="grid four">
+      <div class="card">
+        <h3><span class="step">1</span>Score</h3>
+        <p>Rank memories by an expected-verification-value score from cheap pre-observation signals (revisit visibility, distance from the remembered pose, per-class visual-confusion indicator) and select the top-<i>B</i> under a budget. The score is deliberately simple and auditable; any learned <i>P(stale)</i> estimator can replace it.</p>
+      </div>
+      <div class="card">
+        <h3><span class="step">2</span>Verify</h3>
+        <p>Navigate to the remembered pose with stepwise navigation and run an open-vocabulary detector (Grounding DINO + SAM 2) on the live RGB frame. The verifier decides stale/fresh and returns a detection-grounded candidate location. Oracle metadata is never a policy input.</p>
+      </div>
+      <div class="card">
+        <h3><span class="step">3</span>Update</h3>
+        <p>When stale, the memory record is refreshed in place from detector evidence, recording the old position, the new position, the confidence, and the update source — so every mutation is traceable.</p>
+      </div>
+      <div class="card">
+        <h3><span class="step">4</span>Act</h3>
+        <p>Navigate to the refreshed location and attempt the downstream action with <i>honest interaction</i>: <code>forceAction=False</code>, a yaw-corrected face-then-pick step, a camera-horizon sweep, and a bounded approach fallback over nearby reachable poses.</p>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:14px"><b>Auditability.</b> Every experiment row records whether the verifier was used, the stale decision, whether memory was mutated, the measured revisit/task paths, <code>TeleportFull</code> flags, and a failure reason.</p>
+  </section>
+
+  <section id="results">
+    <h2>Results</h2>
+    <div class="kpis">
+      <div class="kpi"><b>29/32 <small style="font-weight:600">(91%)</small></b><small>active success on the pre-registered challenge (vs. 0/34 passive), exact McNemar p = 3.7e-09</small></div>
+      <div class="kpi"><b>22/24 <small style="font-weight:600">(92%)</small></b><small>held-out v2 on unseen scenes, targets, and seeds (vs. 0/24), p = 4.8e-07</small></div>
+      <div class="kpi"><b>11/11</b><small>held-out pilot on unseen scenes, targets, and seeds (vs. 0/11), p = 9.8e-04</small></div>
+    </div>
+    <table>
+      <thead><tr><th>Case set</th><th>Evaluated pairs</th><th>Active success</th><th>Passive success</th><th>Exact McNemar <i>p</i></th></tr></thead>
+      <tbody>
+        <tr><td>Pre-registered challenge</td><td class="num">32</td><td class="ok">29/32 (91%)</td><td class="bad">0/34</td><td class="num">3.7e-09</td></tr>
+        <tr><td>Held-out pilot (unseen scenes/targets/seeds)</td><td class="num">11</td><td class="ok">11/11</td><td class="bad">0/11</td><td class="num">9.8e-04</td></tr>
+        <tr><td>Held-out v2 (6 unseen scenes, 8 unseen combinations)</td><td class="num">24</td><td class="ok">22/24 (92%)</td><td class="bad">0/24</td><td class="num">4.8e-07</td></tr>
+      </tbody>
+    </table>
+    <p class="caption">95% Clopper-Pearson intervals for the active arm: [0.75, 0.98] on the pre-registered challenge and [0.73, 0.99] on held-out v2. Remaining active failures are honest interaction failures (occluded or obstructed targets) and detector false negatives; they are reported, not excluded.</p>
+
+    <h3>Supporting findings</h3>
+    <ul class="clean">
+      <li><b>Budgeted ranking</b> cuts selected strict detector false negatives from <b>6 → 1</b> over budgets 1–6 on the FN-prone protocol; component ablation attributes the reduction to the visual-confusion prior (matched counterfactual: current 6, density-only 6, visual-only 0, combined 0).</li>
+      <li><b>Detection is not maintenance:</b> a 32B vision-language model detects staleness in <b>6/6</b> single-call cases but chooses the correct update in only <b>3/6</b>; a multi-round agent chain completes <b>0/6</b> full chains.</li>
+      <li><b>Verifier error characterization:</b> all disagreements are false negatives (<b>8/8</b>) concentrated in same-type instance confusion, and targeted reruns show the slice is live-run sensitive rather than deterministic.</li>
+    </ul>
+
+    <figure>
+      <img src="assets/fig_0514_budget_curve.png" alt="Budget curve: selected strict false negatives vs verification budget">
+      <figcaption>Selected strict detector false negatives under the current and calibrated rankings over verification budgets 1–6.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/fig_0514_component_ablation.png" alt="Component ablation of the verification signal">
+      <figcaption>Component ablation: the visual-confusion prior accounts for the reduction; spatial density contributes no improvement on the matched protocol.</figcaption>
+    </figure>
+  </section>
+
+  <section id="protocol">
+    <h2>Evaluation protocol</h2>
+    <p>Claims are tested with a <b>paired</b> design rather than aggregate success rates. Cases are pre-registered and passed through an outcome-free geometry screen (the stale location is at least 2&nbsp;m from the true object and the refreshed location within 1.5&nbsp;m, the target is pickupable, and same-type pairing is unambiguous). Active and passive arms then run the <b>same frozen cases</b>, same scene/seed/spawn, same stepwise navigation, and the same honest interaction; the passive arm acts from the stale location with no verifier and no memory mutation. We report exact counts, McNemar exact tests, and Clopper-Pearson intervals, and replicate on held-out scenes, target classes, and seeds.</p>
+  </section>
+
+  <section id="quickstart">
+    <h2>Quickstart</h2>
+    <pre><code>git clone https://github.com/Jxy-yxJ/MemoryGuard.git
+cd MemoryGuard
+pip install -r requirements.txt          # AI2-THOR, numpy, pillow, matplotlib, opencv
+python -m unittest discover -s tests     # 275 tests (CPU-only)
+
+# screen a case universe, run both arms, analyze the pair
+python -m embodied_memory_pilot.ai2thor_paired_hard_challenge_screen \
+    --scene-targets FloorPlan2:Egg FloorPlan5:Bread --seeds 101 103 107 --k 4 \
+    --freeze-mode round_robin --probe-mode rich --out-dir results/screen
+
+python -m embodied_memory_pilot.ai2thor_live_gsam_closed_loop \
+    --scenes FloorPlan2 FloorPlan5 --seeds 101 103 107 \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json \
+    --verification-budget 4 --revisit-mode stepwise --execute-task-bridge \
+    --honest-interaction --max-alternate-poses 3 --rich-before-probe --out-dir results/active
+
+python -m embodied_memory_pilot.ai2thor_paired_task_bridge_control \
+    results/active/live_gsam_closed_loop.json --live-passive --honest-interaction --out-dir results/paired
+
+python scripts/analyze_paired_hard_challenge.py \
+    --active results/active/live_gsam_closed_loop.json \
+    --paired results/paired/paired_task_bridge_control.json \
+    --case-list results/screen/case_list_paired_hard_challenge_frozen_v1.json --out-dir results/analysis
+
+# render a captioned demo video for a recorded case
+python scripts/make_demo_video.py --row-source results/active/live_gsam_closed_loop.json \
+    --case FloorPlan2:Potato:101 --mode active --out-dir videos</code></pre>
+  </section>
+
+  <section id="citation">
+    <h2>Citation</h2>
+    <pre><code>@misc{jiang2026memoryguard,
+  title        = {MemoryGuard: Bounded Active Memory Maintenance for Long-Horizon Embodied Agents},
+  author       = {Jiang, Xinyu},
+  year         = {2026},
+  howpublished = {\url{https://github.com/Jxy-yxJ/MemoryGuard}},
+  note         = {Open-source research software}
+}</code></pre>
+  </section>
+
+  <section id="scope">
+    <h2>Scope and limitations</h2>
+    <ul class="clean">
+      <li>All results are AI2-THOR mechanism evidence on fixed, pre-registered case sets. The geometry screen conditions the evaluation; the passive baseline is expected to fail on screened cases, so the paired test establishes <b>discrimination, not broad effectiveness</b>.</li>
+      <li>Held-out replication uses a disclosed richer before-state probe than the original protocol.</li>
+      <li>No claim is made for ObjectNav/SPL, manipulation benchmarks, persistent writeback, cross-platform transfer, or real-robot performance.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    © 2026 Xinyu Jiang · <a href="https://github.com/Jxy-yxJ/MemoryGuard">MemoryGuard</a> · MIT License · Built on <a href="https://ai2thor.allenai.org/">AI2-THOR</a>, <a href="https://github.com/IDEA-Research/GroundingDINO">Grounding DINO</a>, and <a href="https://github.com/facebookresearch/sam2">SAM 2</a>.
+  </div>
+</footer>
+
+</body>
+</html>

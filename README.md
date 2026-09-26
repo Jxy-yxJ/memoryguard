@@ -7,7 +7,7 @@
 [![tests](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml/badge.svg)](https://github.com/Jxy-yxJ/MemoryGuard/actions/workflows/tests.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-*Xinyu Jiang ([@Jxy-yxJ](https://github.com/Jxy-yxJ))*
+*Xinyu Jiang ([@Jxy-yxJ](https://github.com/Jxy-yxJ)) — [Project page](https://jxy-yxj.github.io/MemoryGuard/) · [Code](https://github.com/Jxy-yxJ/MemoryGuard)*
 
 
 MemoryGuard studies a concrete failure mode of long-horizon embodied memory: a remembered
